@@ -2,10 +2,10 @@
   "header": {
     "title": "Le Klutch",
     "nav": {
-      "about": "Our Story",
-      "facilities": "World-Class Facilities",
-      "pricing": "Memberships",
-      "contact": "Get in Touch"
+      "about": "Story",
+      "facilities": "Facilities",
+      "pricing": "Pricing",
+      "contact": "Contact Us"
     },
     "cta": "Reserve Your Court"
   },
@@ -71,10 +71,7 @@
     "coachLesson": {
       "title": "Pro Coaching",
       "price": "Starting at NT$1,700",
-      "features": [
-        "Personalized 1-on-1 or 2-on-1 sessions",
-        "Expert technique refinement"
-      ],
+      "features": ["Personalized 1-on-1 or 2-on-1 sessions", "Expert technique refinement"],
       "cta": "Elevate Your Game"
     },
     "groupLesson": {
@@ -184,14 +181,14 @@
         ]
       },
       {
-        "question": "Lesson Booking Policy",
+        "question": "Booking Policy",
         "answer": [
           "To minimize disruptions, entry to lessons is not permitted 15 minutes after the scheduled start time",
           "Online bookings close 6 hours before the lesson start time. For last-minute bookings within this 6-hour window, please call us or contact our LINE customer service to check availability"
         ]
       },
       {
-        "question": "Lesson Package Terms",
+        "question": "Package Terms",
         "answer": [
           "Lesson packages are valid from the date of purchase",
           "Packages are non-transferable and non-shareable. One-time full transfers are allowed for a NT$400 fee (excluding trial packages)",
@@ -206,16 +203,11 @@
       },
       {
         "question": "How to Get Here",
-        "answer": [
-          "MRT: Gangqian Station (Wenhu Line)",
-          "Bus: Alight at Yangguang Pumping Station"
-        ]
+        "answer": ["MRT: Gangqian Station (Wenhu Line)", "Bus: Alight at Yangguang Pumping Station"]
       },
       {
         "question": "Parking Options",
-        "answer": [
-          "Ample street parking and paid lots are available in the vicinity"
-        ]
+        "answer": ["Ample street parking and paid lots are available in the vicinity"]
       }
     ]
   },

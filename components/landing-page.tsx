@@ -1,11 +1,12 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Facebook,
   Instagram,
+  LineChart,
   Clock,
   MapPin,
   Phone,
@@ -14,25 +15,31 @@ import {
   Award,
   Activity,
   Brain,
-  Handshake,
-} from "lucide-react";
+  Check,
+  Copy,
+  Shield,
+  Dumbbell,
+  Coffee,
+} from 'lucide-react';
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from 'react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import Image from "next/image";
-import { Noto_Sans_TC, Noto_Serif_TC } from "next/font/google";
-import { Check, Copy } from "lucide-react";
-import content from "@/locales/zh-TW.json";
+} from '@/components/ui/dialog';
+import Image from 'next/image';
+import { Noto_Sans_TC, Noto_Serif_TC } from 'next/font/google';
+import { useSearchParams } from 'next/navigation';
+
+// 定義支持的語言列表
+const SUPPORTED_LANGUAGES = ['zh-TW', 'en-US'];
 
 // 初始化字體
-const notoSansTC = Noto_Sans_TC({ subsets: ["latin"] });
-const notoSerifTC = Noto_Serif_TC({ subsets: ["latin"], weight: "700" });
+const notoSansTC = Noto_Sans_TC({ subsets: ['latin'] });
+const notoSerifTC = Noto_Serif_TC({ subsets: ['latin'], weight: '700' });
 
 // Custom hook for intersection observer
 function useIntersectionObserver(options = {}) {
@@ -60,7 +67,7 @@ function useIntersectionObserver(options = {}) {
 // Animated section component
 function AnimatedSection({
   children,
-  className = "",
+  className = '',
 }: {
   children: React.ReactNode;
   className?: string;
@@ -74,9 +81,7 @@ function AnimatedSection({
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
       className={`transition-all duration-1000 ${
-        isIntersecting
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-10"
+        isIntersecting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       } ${className}`}
     >
       {children}
@@ -89,13 +94,7 @@ function Accordion({ children }: { children: React.ReactNode }) {
   return <div className="w-full">{children}</div>;
 }
 
-function AccordionItem({
-  trigger,
-  children,
-}: {
-  trigger: string;
-  children: React.ReactNode;
-}) {
+function AccordionItem({ trigger, children }: { trigger: string; children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -106,9 +105,7 @@ function AccordionItem({
       >
         <span className="text-lg font-semibold text-green-800">{trigger}</span>
         <ChevronDown
-          className={`transform transition-transform ${
-            isOpen ? "rotate-180" : ""
-          } text-green-600`}
+          className={`transform transition-transform ${isOpen ? 'rotate-180' : ''} text-green-600`}
         />
       </button>
       {isOpen && <div className="p-6">{children}</div>}
@@ -120,10 +117,53 @@ export function LandingPageComponent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState('zh-TW');
+  const [content, setContent] = useState(require('@/locales/zh-TW.json'));
+  const searchParams = useSearchParams();
+
+  const loadLanguageContent = useCallback((lang: string) => {
+    try {
+      // 檢查語言是否在支持列表中
+      if (!SUPPORTED_LANGUAGES.includes(lang)) {
+        throw new Error('Unsupported language');
+      }
+      const newContent = require(`@/locales/${lang}.json`);
+      setContent(newContent);
+      setCurrentLanguage(lang);
+      localStorage.setItem('language', lang);
+
+      // 更新 URL
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', lang);
+      window.history.pushState({}, '', url);
+    } catch (error) {
+      console.error(`Failed to load language: ${lang}`, error);
+      // 如果加載失敗，使用默認的中文內容
+      setContent(require('@/locales/zh-TW.json'));
+      setCurrentLanguage('zh-TW');
+      localStorage.setItem('language', 'zh-TW');
+
+      // 更新 URL 為默認語言
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', 'zh-TW');
+      window.history.pushState({}, '', url);
+    }
+  }, []);
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+
+    const langParam = searchParams?.get('lang');
+    if (langParam) {
+      loadLanguageContent(langParam);
+    } else {
+      const storedLang = localStorage.getItem('language');
+      if (storedLang) {
+        loadLanguageContent(storedLang);
+      }
+      // 如果既沒有 URL 參數也沒有 localStorage 中的值，則使用默認的 'zh-TW'
+    }
+  }, [searchParams, loadLanguageContent]);
 
   const copyToClipboard = useCallback((text: string) => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -132,16 +172,16 @@ export function LandingPageComponent() {
         setTimeout(() => setCopied(false), 2000);
       });
     } else {
-      const textArea = document.createElement("textarea");
+      const textArea = document.createElement('textarea');
       textArea.value = text;
       document.body.appendChild(textArea);
       textArea.select();
       try {
-        document.execCommand("copy");
+        document.execCommand('copy');
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       } catch (err) {
-        console.error("Failed to copy text: ", err);
+        console.error('Failed to copy text: ', err);
       }
       document.body.removeChild(textArea);
     }
@@ -149,30 +189,23 @@ export function LandingPageComponent() {
 
   // Extract image URLs into variables
   const heroBackgroundUrl =
-    "https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
-  const tennisPlayerUrl =
-    "https://images.unsplash.com/photo-1542144582-1ba00456b5e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80";
+    'https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
+
+  const featureIcons = [Users, Award, Activity, Brain];
 
   if (!isClient) {
     return null; // or a loading spinner
   }
 
   return (
-    <div className={`min-h-screen bg-[#004730]/10 ${notoSansTC.className}`}>
-      <header className="bg-[#004730] text-white p-4 fixed w-full z-10">
+    <div className={`min-h-screen bg-[#064423]/10 ${notoSansTC.className}`}>
+      <header className="bg-[#064423] text-white p-4 fixed w-full z-10">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <Image
-              src="/images/le-klutch-logo.png"
-              alt="Le Klutch 標誌"
-              width={48}
-              height={48}
-            />
-            <h1 className="text-2xl font-bold font-serif">
-              {content.header.title}
-            </h1>
+            <Image src="/images/le-klutch-logo.png" alt="Le Klutch 標誌" width={48} height={48} />
+            <h1 className="text-2xl font-bold font-serif">{content.header.title}</h1>
           </div>
-          <nav className="hidden md:flex items-center space-x-6">
+          <nav className="flex items-center space-x-6">
             {Object.entries(content.header.nav).map(([key, value]) => (
               <a
                 key={key}
@@ -183,12 +216,30 @@ export function LandingPageComponent() {
               </a>
             ))}
           </nav>
-          <Button
-            className="hidden md:block border border-current hover:bg-green-100 transition-colors"
-            onClick={() => window.open("https://lin.ee/9bs6DF0", "_blank")}
-          >
-            {content.header.cta}
-          </Button>
+          <div className="hidden md:flex items-center space-x-4">
+            <div className="flex space-x-2">
+              <Button
+                variant={currentLanguage === 'zh-TW' ? 'secondary' : 'ghost'}
+                className="px-2 py-1 text-sm"
+                onClick={() => loadLanguageContent('zh-TW')}
+              >
+                中文
+              </Button>
+              <Button
+                variant={currentLanguage === 'en-US' ? 'secondary' : 'ghost'}
+                className="px-2 py-1 text-sm"
+                onClick={() => loadLanguageContent('en-US')}
+              >
+                English
+              </Button>
+            </div>
+            <Button
+              className="border border-current hover:bg-green-100 transition-colors"
+              onClick={() => window.open('https://lin.ee/9bs6DF0', '_blank')}
+            >
+              {content.header.cta}
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -205,14 +256,10 @@ export function LandingPageComponent() {
             <h2 className="text-5xl font-bold mb-4">{content.hero.title}</h2>
             <p className="text-2xl mb-8">{content.hero.subtitle}</p>
             <div className="flex justify-center">
-              {" "}
+              {' '}
               {/* Add this container */}
               <div className="flex space-x-4">
-                <a
-                  href="https://lin.ee/9bs6DF0"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href="https://lin.ee/9bs6DF0" target="_blank" rel="noopener noreferrer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -230,20 +277,14 @@ export function LandingPageComponent() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Instagram
-                    size={24}
-                    className="hover:text-green-300 transition duration-300"
-                  />
+                  <Instagram size={24} className="hover:text-green-300 transition duration-300" />
                 </a>
                 <a
                   href="https://www.facebook.com/leklutchtennisclub"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Facebook
-                    size={24}
-                    className="hover:text-green-300 transition duration-300"
-                  />
+                  <Facebook size={24} className="hover:text-green-300 transition duration-300" />
                 </a>
               </div>
             </div>
@@ -270,17 +311,21 @@ export function LandingPageComponent() {
                 </div>
 
                 <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-                  {content.about.features.map((feature, index) => (
-                    <div
-                      key={index}
-                      className="bg-white p-6 rounded-xl shadow-lg transition-transform hover:scale-105"
-                    >
-                      <h4 className="text-xl font-semibold mb-2 text-green-700">
-                        {feature.title}
-                      </h4>
-                      <p className="text-gray-600">{feature.description}</p>
-                    </div>
-                  ))}
+                  {content.about.features.map((feature: any, index: number) => {
+                    const Icon = featureIcons[index];
+                    return (
+                      <div
+                        key={index}
+                        className="bg-white p-6 rounded-xl shadow-lg transition-transform hover:scale-105"
+                      >
+                        <Icon className="w-8 h-8 text-green-600 mb-4" />
+                        <h4 className="text-xl font-semibold mb-2 text-green-700">
+                          {feature.title}
+                        </h4>
+                        <p className="text-gray-600">{feature.description}</p>
+                      </div>
+                    );
+                  })}
                 </div>
 
                 <div className="max-w-2xl mx-auto">
@@ -288,17 +333,13 @@ export function LandingPageComponent() {
                     <h3 className="text-3xl font-bold mb-4 text-center">
                       {content.about.promotion.title}
                     </h3>
-                    <p className="text-2xl mb-2 text-center">
-                      {content.about.promotion.price}
-                    </p>
+                    <p className="text-2xl mb-2 text-center">{content.about.promotion.price}</p>
                     <p className="text-lg mb-6 font-semibold text-center">
                       {content.about.promotion.description}
                     </p>
                     <Button
                       className="w-full bg-white text-green-600 hover:bg-green-50 transition-colors text-lg py-3 font-bold"
-                      onClick={() =>
-                        window.open("https://lin.ee/9bs6DF0", "_blank")
-                      }
+                      onClick={() => window.open('https://lin.ee/9bs6DF0', '_blank')}
                     >
                       {content.about.promotion.cta}
                     </Button>
@@ -319,17 +360,20 @@ export function LandingPageComponent() {
                 {content.facilities.description}
               </p>
               <div className="grid md:grid-cols-3 gap-8">
-                {content.facilities.features.map((feature, index) => (
-                  <div
-                    key={index}
-                    className="bg-white p-6 rounded-xl shadow-lg"
-                  >
-                    <h3 className="text-xl font-semibold mb-2 text-green-700">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-600">{feature.description}</p>
-                  </div>
-                ))}
+                {content.facilities.features.map((feature, index) => {
+                  const Icon = [MapPin, Clock, Shield, Users, Dumbbell, Coffee][index % 6];
+                  return (
+                    <div key={index} className="bg-white p-6 rounded-xl shadow-lg flex items-start">
+                      <Icon className="w-8 h-8 text-green-600 mr-4 flex-shrink-0" />
+                      <div>
+                        <h3 className="text-xl font-semibold mb-2 text-green-700">
+                          {feature.title}
+                        </h3>
+                        <p className="text-gray-600">{feature.description}</p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </section>
@@ -337,11 +381,9 @@ export function LandingPageComponent() {
         <AnimatedSection>
           <section id="pricing" className="py-20 bg-white scroll-mt-20">
             <div className="container mx-auto px-4">
-              <h2 className="text-4xl font-bold mb-12 text-center">
-                {content.pricing.title}
-              </h2>
+              <h2 className="text-4xl font-bold mb-12 text-center">{content.pricing.title}</h2>
               <div className="grid md:grid-cols-3 gap-8">
-                <Card className="bg-[#004730]/5 shadow-md hover:shadow-xl transition duration-300">
+                <Card className="bg-[#064423]/5 shadow-md hover:shadow-xl transition duration-300">
                   <CardContent className="p-6">
                     <h3 className="text-2xl font-bold mb-4 text-center">
                       {content.pricing.singlePurchase.title}
@@ -350,27 +392,22 @@ export function LandingPageComponent() {
                       {content.pricing.singlePurchase.price}
                     </p>
                     <ul className="space-y-2 mb-6">
-                      {content.pricing.singlePurchase.features.map(
-                        (feature, index) => (
-                          <li key={index} className="flex items-center">
-                            <ChevronDown className="text-green-600 mr-2" />{" "}
-                            {feature}
-                          </li>
-                        )
-                      )}
+                      {content.pricing.singlePurchase.features.map((feature, index) => (
+                        <li key={index} className="flex items-center">
+                          <ChevronDown className="text-green-600 mr-2" /> {feature}
+                        </li>
+                      ))}
                     </ul>
                     <Button
                       className="w-full bg-green-600 hover:bg-green-700 text-white"
-                      onClick={() =>
-                        window.open("https://lin.ee/9bs6DF0", "_blank")
-                      }
+                      onClick={() => window.open('https://lin.ee/9bs6DF0', '_blank')}
                     >
                       {content.pricing.singlePurchase.cta}
                     </Button>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-[#004730]/10 shadow-md hover:shadow-xl transition duration-300 transform scale-105">
+                <Card className="bg-[#064423]/10 shadow-md hover:shadow-xl transition duration-300 transform scale-105">
                   <CardContent className="p-6">
                     <h3 className="text-2xl font-bold mb-4 text-center">
                       {content.pricing.coachLesson.title}
@@ -379,14 +416,11 @@ export function LandingPageComponent() {
                       {content.pricing.coachLesson.price}
                     </p>
                     <ul className="space-y-2 mb-6">
-                      {content.pricing.coachLesson.features.map(
-                        (feature, index) => (
-                          <li key={index} className="flex items-center">
-                            <ChevronDown className="text-green-600 mr-2" />{" "}
-                            {feature}
-                          </li>
-                        )
-                      )}
+                      {content.pricing.coachLesson.features.map((feature, index) => (
+                        <li key={index} className="flex items-center">
+                          <ChevronDown className="text-green-600 mr-2" /> {feature}
+                        </li>
+                      ))}
                     </ul>
                     <Button
                       className="w-full bg-green-600 hover:bg-green-700 text-white"
@@ -397,7 +431,7 @@ export function LandingPageComponent() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-[#004730]/5 shadow-md hover:shadow-xl transition duration-300">
+                <Card className="bg-[#064423]/5 shadow-md hover:shadow-xl transition duration-300">
                   <CardContent className="p-6">
                     <h3 className="text-2xl font-bold mb-4 text-center">
                       {content.pricing.groupLesson.title}
@@ -406,14 +440,11 @@ export function LandingPageComponent() {
                       {content.pricing.groupLesson.price}
                     </p>
                     <ul className="space-y-2 mb-6">
-                      {content.pricing.groupLesson.features.map(
-                        (feature, index) => (
-                          <li key={index} className="flex items-center">
-                            <ChevronDown className="text-green-600 mr-2" />{" "}
-                            {feature}
-                          </li>
-                        )
-                      )}
+                      {content.pricing.groupLesson.features.map((feature, index) => (
+                        <li key={index} className="flex items-center">
+                          <ChevronDown className="text-green-600 mr-2" /> {feature}
+                        </li>
+                      ))}
                     </ul>
                     <Button
                       className="w-full bg-green-600 hover:bg-green-700 text-white"
@@ -433,9 +464,7 @@ export function LandingPageComponent() {
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl">
                     <DialogHeader>
-                      <DialogTitle>
-                        {content.pricing.detailedInfo.title}
-                      </DialogTitle>
+                      <DialogTitle>{content.pricing.detailedInfo.title}</DialogTitle>
                     </DialogHeader>
                     <div className="overflow-y-auto max-h-[70vh]">
                       <h3 className="text-2xl font-bold mt-4 mb-2">
@@ -449,10 +478,7 @@ export function LandingPageComponent() {
                           <tr className="bg-green-100">
                             {content.pricing.detailedInfo.groupLessons.tableHeaders.map(
                               (header, index) => (
-                                <th
-                                  key={index}
-                                  className="border border-gray-300 p-2"
-                                >
+                                <th key={index} className="border border-gray-300 p-2">
                                   {header}
                                 </th>
                               )
@@ -460,24 +486,14 @@ export function LandingPageComponent() {
                           </tr>
                         </thead>
                         <tbody>
-                          {content.pricing.detailedInfo.groupLessons.packages.map(
-                            (pkg, index) => (
-                              <tr key={index}>
-                                <td className="border border-gray-300 p-2">
-                                  {pkg.name}
-                                </td>
-                                <td className="border border-gray-300 p-2">
-                                  {pkg.price}
-                                </td>
-                                <td className="border border-gray-300 p-2">
-                                  {pkg.points}
-                                </td>
-                                <td className="border border-gray-300 p-2">
-                                  {pkg.averagePrice}
-                                </td>
-                              </tr>
-                            )
-                          )}
+                          {content.pricing.detailedInfo.groupLessons.packages.map((pkg, index) => (
+                            <tr key={index}>
+                              <td className="border border-gray-300 p-2">{pkg.name}</td>
+                              <td className="border border-gray-300 p-2">{pkg.price}</td>
+                              <td className="border border-gray-300 p-2">{pkg.points}</td>
+                              <td className="border border-gray-300 p-2">{pkg.averagePrice}</td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
 
@@ -489,10 +505,7 @@ export function LandingPageComponent() {
                           <tr className="bg-green-100">
                             {content.pricing.detailedInfo.coachLessons.tableHeaders.map(
                               (header, index) => (
-                                <th
-                                  key={index}
-                                  className="border border-gray-300 p-2"
-                                >
+                                <th key={index} className="border border-gray-300 p-2">
                                   {header}
                                 </th>
                               )
@@ -500,21 +513,13 @@ export function LandingPageComponent() {
                           </tr>
                         </thead>
                         <tbody>
-                          {content.pricing.detailedInfo.coachLessons.packages.map(
-                            (pkg, index) => (
-                              <tr key={index}>
-                                <td className="border border-gray-300 p-2">
-                                  {pkg.name}
-                                </td>
-                                <td className="border border-gray-300 p-2">
-                                  {pkg.price}
-                                </td>
-                                <td className="border border-gray-300 p-2">
-                                  {pkg.averagePrice}
-                                </td>
-                              </tr>
-                            )
-                          )}
+                          {content.pricing.detailedInfo.coachLessons.packages.map((pkg, index) => (
+                            <tr key={index}>
+                              <td className="border border-gray-300 p-2">{pkg.name}</td>
+                              <td className="border border-gray-300 p-2">{pkg.price}</td>
+                              <td className="border border-gray-300 p-2">{pkg.averagePrice}</td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                       <h3 className="text-2xl font-bold mt-6 mb-2">
@@ -525,16 +530,10 @@ export function LandingPageComponent() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="space-y-2">
                             <p className="font-semibold">
-                              {
-                                content.pricing.detailedInfo.paymentInfo
-                                  .accountName
-                              }
+                              {content.pricing.detailedInfo.paymentInfo.accountName}
                             </p>
                             <p className="text-gray-700">
-                              {
-                                content.pricing.detailedInfo.paymentInfo
-                                  .accountNameValue
-                              }
+                              {content.pricing.detailedInfo.paymentInfo.accountNameValue}
                             </p>
                           </div>
                           <div className="space-y-2">
@@ -542,38 +541,25 @@ export function LandingPageComponent() {
                               {content.pricing.detailedInfo.paymentInfo.bank}
                             </p>
                             <p className="text-gray-700">
-                              {
-                                content.pricing.detailedInfo.paymentInfo
-                                  .bankValue
-                              }
+                              {content.pricing.detailedInfo.paymentInfo.bankValue}
                             </p>
                           </div>
                           <div className="space-y-2">
                             <p className="font-semibold">
-                              {
-                                content.pricing.detailedInfo.paymentInfo
-                                  .accountNumber
-                              }
+                              {content.pricing.detailedInfo.paymentInfo.accountNumber}
                             </p>
                             <div className="flex items-center space-x-2">
                               <p className="text-gray-700">
-                                {
-                                  content.pricing.detailedInfo.paymentInfo
-                                    .accountNumberValue
-                                }
+                                {content.pricing.detailedInfo.paymentInfo.accountNumberValue}
                               </p>
                               <button
                                 onClick={() =>
                                   copyToClipboard(
-                                    content.pricing.detailedInfo.paymentInfo
-                                      .accountNumberValue
+                                    content.pricing.detailedInfo.paymentInfo.accountNumberValue
                                   )
                                 }
                                 className="p-1 rounded-md hover:bg-green-100 transition-colors"
-                                aria-label={
-                                  content.pricing.detailedInfo.paymentInfo
-                                    .copyButton
-                                }
+                                aria-label={content.pricing.detailedInfo.paymentInfo.copyButton}
                               >
                                 {copied ? (
                                   <Check className="w-4 h-4 text-green-600" />
@@ -590,14 +576,9 @@ export function LandingPageComponent() {
                         <h4 className="font-bold mb-2">
                           {content.pricing.detailedInfo.notes.title}
                         </h4>
+                        <p>{content.pricing.detailedInfo.notes.paymentMethod}</p>
                         <p>
-                          {content.pricing.detailedInfo.notes.paymentMethod}
-                        </p>
-                        <p>
-                          {
-                            content.pricing.detailedInfo.notes
-                              .confirmationInstruction
-                          }{" "}
+                          {content.pricing.detailedInfo.notes.confirmationInstruction}{' '}
                           <a
                             href="https://lin.ee/9bs6DF0"
                             target="_blank"
@@ -605,19 +586,15 @@ export function LandingPageComponent() {
                             className="text-green-600 hover:underline"
                           >
                             Line
-                          </a>{" "}
+                          </a>{' '}
                           {content.pricing.detailedInfo.notes.provideInfo}
                         </p>
                         <ul className="list-disc list-inside ml-4">
-                          {content.pricing.detailedInfo.notes.requiredInfo.map(
-                            (info, index) => (
-                              <li key={index}>{info}</li>
-                            )
-                          )}
+                          {content.pricing.detailedInfo.notes.requiredInfo.map((info, index) => (
+                            <li key={index}>{info}</li>
+                          ))}
                         </ul>
-                        <p className="mt-2">
-                          {content.pricing.detailedInfo.notes.confirmation}
-                        </p>
+                        <p className="mt-2">{content.pricing.detailedInfo.notes.confirmation}</p>
                       </div>
                     </div>
                   </DialogContent>
@@ -649,19 +626,12 @@ export function LandingPageComponent() {
           </section>
         </AnimatedSection>
         <AnimatedSection>
-          <section
-            id="contact"
-            className="py-20 bg-[#004730] text-white scroll-mt-20"
-          >
+          <section id="contact" className="py-20 bg-[#064423] text-white scroll-mt-20">
             <div className="container mx-auto px-4">
-              <h2 className="text-4xl font-bold mb-12 text-center">
-                {content.contact.title}
-              </h2>
+              <h2 className="text-4xl font-bold mb-12 text-center">{content.contact.title}</h2>
               <div className="grid md:grid-cols-2 gap-12">
                 <div>
-                  <h3 className="text-2xl font-bold mb-4">
-                    {content.contact.subtitle}
-                  </h3>
+                  <h3 className="text-2xl font-bold mb-4">{content.contact.subtitle}</h3>
                   <div className="space-y-4">
                     <div className="flex items-center space-x-4">
                       <MapPin size={24} />
@@ -677,16 +647,19 @@ export function LandingPageComponent() {
                     </div>
                   </div>
                   <div className="mt-6 flex space-x-4">
-                    <a
-                      href="https://www.facebook.com/leklutchtennisclub"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Facebook
-                        size={24}
+                    <a href="https://lin.ee/9bs6DF0" target="_blank" rel="noopener noreferrer">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="28"
+                        height="28"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
                         className="hover:text-green-300 transition duration-300"
-                      />
+                      >
+                        <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.105.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />
+                      </svg>
                     </a>
+
                     <a
                       href="https://www.instagram.com/leklutchtennisclub/"
                       target="_blank"
@@ -698,24 +671,14 @@ export function LandingPageComponent() {
                       />
                     </a>
                     <a
-                      href="https://lin.ee/9bs6DF0"
+                      href="https://www.facebook.com/leklutchtennisclub"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                      <Facebook
+                        size={24}
                         className="hover:text-green-300 transition duration-300"
-                      >
-                        <path d="M15 8h.01M12 8h.01M9 8h.01M6 8h.01M21 12c0 4.418-4.477 8-10 8s-10-3.582-10-8 4.477-8 10-8 10 3.582 10 8z" />
-                      </svg>
+                      />
                     </a>
                   </div>
                 </div>
@@ -735,7 +698,7 @@ export function LandingPageComponent() {
         </AnimatedSection>
       </main>
 
-      <footer className="bg-[#004730] text-white py-8">
+      <footer className="bg-[#064423] text-white py-8">
         <div className="container mx-auto px-4 text-center">
           <p>{content.footer.copyright}</p>
           <p className="mt-2">{content.footer.credits}</p>

@@ -1,0 +1,221 @@
+{
+  "header": {
+    "title": "Le Klutch",
+    "nav": {
+      "about": "關於我們",
+      "facilities": "設施",
+      "pricing": "價格",
+      "contact": "聯絡我們"
+    },
+    "cta": "立即預約"
+  },
+  "hero": {
+    "title": "歡迎來到 Le Klutch 網球俱樂部",
+    "subtitle": "可奇室內網球 - 創造屬於您的 LE KLUTCH 時刻！"
+  },
+  "about": {
+    "title": "LE KLUTCH",
+    "subtitle": "關於我們",
+    "description": "LE KLUTCH，源自法語「le clutch」，如詩般優雅地詮釋著「關鍵時刻」。在翠綠的網球場上，它化身為決定勝負的精彩瞬間，如同一首激昂的生命頌歌。我們深信，每個人都能在人生的舞台上，揮灑出屬於自己的 LE KLUTCH 時刻！讓我們一同在這片綠茵上，譜寫屬於自己的網球詩篇，將汗水與熱情融入每一個揮拍的瞬間。",
+    "features": [
+      {
+        "title": "充滿樂趣與挑戰",
+        "description": "每一球都是新的冒險，激發你的運動潛能"
+      },
+      {
+        "title": "全身運動健康",
+        "description": "提升體能與協調性，塑造健康強壯的身體"
+      },
+      {
+        "title": "鍛煉戰略思維",
+        "description": "成為場上的智者，培養快速決策和戰術分析能力"
+      },
+      {
+        "title": "擴展社交圈",
+        "description": "結識志同道合的朋友，建立終身的網球夥伴關係"
+      }
+    ],
+    "promotion": {
+      "title": "限時體驗優惠",
+      "price": "僅需 NT$390 / 30分鐘",
+      "description": "每人限購一次，機會難得！",
+      "cta": "立即預約體驗"
+    }
+  },
+  "facilities": {
+    "title": "世界級設施",
+    "description": "在 LE KLUTCH，我們致力於打造頂級的室內網球體驗。從量身定制的課程到先進的設施，我們為每一位球員提供最佳的成長環境。",
+    "features": [
+      {
+        "title": "5個室內球場",
+        "description": "配備完美照明和溫控系統的先進室內球場"
+      },
+      {
+        "title": "專業教練",
+        "description": "經驗豐富的教練為各級別球員提供個人化訓練"
+      },
+      {
+        "title": "ITF認證",
+        "description": "我們的設施符合國際網球聯合會標準"
+      }
+    ]
+  },
+  "pricing": {
+    "title": "會員與價格",
+    "singlePurchase": {
+      "title": "單堂購買",
+      "price": "NT$480 - NT$580",
+      "features": ["60分鐘", "靈活選擇"],
+      "cta": "立即購買"
+    },
+    "coachLesson": {
+      "title": "教練課",
+      "price": "NT$1,700起",
+      "features": ["1V1 或 1V2 課程", "專業教練指導"],
+      "cta": "查看詳情"
+    },
+    "groupLesson": {
+      "title": "團體課",
+      "price": "NT$149起/點",
+      "features": ["多種套餐選擇", "靈活使用點數"],
+      "cta": "查看詳情"
+    },
+    "moreDetails": "查看更多價格詳情",
+    "detailedInfo": {
+      "title": "詳細價格資訊",
+      "groupLessons": {
+        "title": "團課方案價目表",
+        "description": "團課時段及課程點數請參閱單月課表",
+        "tableHeaders": [
+          "點數套餐",
+          "套票價格 & 有效期限",
+          "點數",
+          "每點平均價"
+        ],
+        "packages": [
+          {
+            "name": "一點 SINGLE",
+            "price": "$190 (7天)",
+            "points": "1點",
+            "averagePrice": "NT$190"
+          },
+          {
+            "name": "輕量 STARTER",
+            "price": "$7,500 (60天)",
+            "points": "43點",
+            "averagePrice": "NT$174"
+          },
+          {
+            "name": "中量 REGULAR",
+            "price": "$13,800 (180天)",
+            "points": "86點",
+            "averagePrice": "NT$160"
+          },
+          {
+            "name": "海量 GRANDE",
+            "price": "$19,000 (180天)",
+            "points": "127點",
+            "averagePrice": "NT$149"
+          }
+        ]
+      },
+      "coachLessons": {
+        "title": "教練課價目表",
+        "tableHeaders": ["套餐", "價格 & 有效期", "每堂平均"],
+        "packages": [
+          {
+            "name": "1V1教練課 (10堂)",
+            "price": "$18,000 (180天)",
+            "averagePrice": "NT$1,800/堂 (60分鐘)"
+          },
+          {
+            "name": "1V1教練課 (20堂)",
+            "price": "$34,000 (365天)",
+            "averagePrice": "NT$1,700/堂 (60分鐘)"
+          },
+          {
+            "name": "1V2教練課 (10堂)",
+            "price": "$22,000 (180天)",
+            "averagePrice": "NT$2,200/堂 (60分鐘)"
+          },
+          {
+            "name": "1V2教練課 (20堂)",
+            "price": "$40,000 (365天)",
+            "averagePrice": "NT$2,000/堂 (60分鐘)"
+          }
+        ]
+      },
+      "paymentInfo": {
+        "title": "匯款資訊",
+        "accountName": "戶名",
+        "accountNameValue": "可奇運動器材有限公司",
+        "bank": "銀行",
+        "bankValue": "玉山銀行 808",
+        "accountNumber": "帳號",
+        "accountNumberValue": "054394068683",
+        "copyButton": "複製帳號"
+      },
+      "notes": {
+        "title": "注意事項：",
+        "paymentMethod": "團課 & 教練課僅限【匯款】",
+        "confirmationInstruction": "匯款完成後，請用 Line 提供以下資訊以便確認：",
+        "requiredInfo": ["會員姓名", "手機後三碼", "匯款帳號後三碼"],
+        "confirmation": "我們將在營業時間為您儲值點數 🎾",
+        "provideInfo": "提供以下資訊以便確認："
+      }
+    }
+  },
+  "faq": {
+    "title": "常見問題",
+    "questions": [
+      {
+        "question": "球場使用規則",
+        "answer": [
+          "為維護消費者安全，球道內最多兩人同時擊球",
+          "球道打擊區會員請務必穿著運動服裝及軟底運動鞋入場，禁止穿著不合場地使用規範之鞋類",
+          "球道區嚴禁口香糖及攜帶任何食品、飲料入場 (開水、毛巾除外)"
+        ]
+      },
+      {
+        "question": "課程預約規則",
+        "answer": [
+          "為維護其他消費者安全，開課15分鐘後即無法進入教室。",
+          "訂課系統預約截止時間為開課前六小時，若開課六小時內想約上課，請來電洽詢或連繫LINE客服確認是否可以預該課"
+        ]
+      },
+      {
+        "question": "課程方案規則",
+        "answer": [
+          "課程方案購買當天立即生效，起算為第一天",
+          "課程方案為個人制，無法共用。但可全數轉讓，無法部分轉讓且以一次為限。每筆轉讓均收NT$400一次性手續費（體驗課方案無法轉讓）。",
+          "購課後因故無法參加可提供退費，每筆退費均收NT$600一次性手續費（已使用課程之扣款採單堂原價計算，不適用於多堂優惠方案）。",
+          "購課後符合以下法定事由，在出示相關證明後享有一次延期機會：",
+          "一般感冒及女性生理期，不得申請病假且不適用於方案延期"
+        ]
+      },
+      {
+        "question": "營業時間",
+        "answer": ["10:00AM~10:00PM"]
+      },
+      {
+        "question": "交通資訊",
+        "answer": ["捷運: 文湖線港墘站", "公車: 陽光抽水站"]
+      },
+      {
+        "question": "停車資訊",
+        "answer": ["周遭有許多路邊停車格以及付費停車場"]
+      }
+    ]
+  },
+  "contact": {
+    "title": "聯絡我們",
+    "subtitle": "與我們聯繫",
+    "address": "台北市內湖區舊宗路二段181巷2號2F",
+    "phone": "02-2797-5889",
+    "hours": "08:00AM~20:00PM"
+  },
+  "footer": {
+    "copyright": "© 2023 Le Klutch 網球俱樂部。保留所有權利。",
+    "credits": "設計與開發 by Le Klutch 團隊"
+  }
+}

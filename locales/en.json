@@ -1,0 +1,233 @@
+{
+  "header": {
+    "title": "Le Klutch",
+    "nav": {
+      "about": "Our Story",
+      "facilities": "World-Class Facilities",
+      "pricing": "Memberships",
+      "contact": "Get in Touch"
+    },
+    "cta": "Reserve Your Court"
+  },
+  "hero": {
+    "title": "Experience Tennis Excellence at Le Klutch",
+    "subtitle": "Elevate Your Game, Create Your LE KLUTCH Moment!"
+  },
+  "about": {
+    "title": "LE KLUTCH",
+    "subtitle": "Where Champions Are Made",
+    "description": "LE KLUTCH, inspired by the French 'le clutch', embodies the essence of that pivotal moment in tennis. On our pristine courts, every swing has the potential to be the game-changer, the heartbeat of an epic match. We believe in empowering every player to seize their LE KLUTCH moment, both on and off the court. Join us in crafting your tennis legacy, where passion meets precision in every serve, volley, and smash.",
+    "features": [
+      {
+        "title": "Exhilarating Challenges",
+        "description": "Unleash your potential with every serve, pushing boundaries and redefining your limits"
+      },
+      {
+        "title": "Total Body Transformation",
+        "description": "Sculpt your physique and boost your vitality through the dynamic art of tennis"
+      },
+      {
+        "title": "Master Tactician",
+        "description": "Sharpen your mind and become the grandmaster of the court with strategic play"
+      },
+      {
+        "title": "Elite Tennis Community",
+        "description": "Connect with fellow enthusiasts and forge lifelong friendships in our vibrant tennis family"
+      }
+    ],
+    "promotion": {
+      "title": "Exclusive Trial Offer",
+      "price": "Experience Excellence for Just NT$390 / 30 minutes",
+      "description": "Limited availability! One-time offer per person.",
+      "cta": "Claim Your Trial Now"
+    }
+  },
+  "facilities": {
+    "title": "State-of-the-Art Facilities",
+    "description": "At LE KLUTCH, we've crafted the ultimate indoor tennis haven. Our cutting-edge facilities and tailored programs provide the perfect environment for players to thrive, whether you're a beginner or a seasoned pro.",
+    "features": [
+      {
+        "title": "5 Premium Indoor Courts",
+        "description": "Play in perfect conditions year-round with our climate-controlled, pro-grade courts"
+      },
+      {
+        "title": "Elite Coaching Team",
+        "description": "Learn from the best with our world-class coaches, dedicated to elevating your game"
+      },
+      {
+        "title": "ITF Certified Excellence",
+        "description": "Train on courts that meet rigorous International Tennis Federation standards"
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Membership Options",
+    "singlePurchase": {
+      "title": "Flex Play",
+      "price": "NT$480 - NT$580",
+      "features": ["60-minute sessions", "Book as you go"],
+      "cta": "Book Your Session"
+    },
+    "coachLesson": {
+      "title": "Pro Coaching",
+      "price": "Starting at NT$1,700",
+      "features": [
+        "Personalized 1-on-1 or 2-on-1 sessions",
+        "Expert technique refinement"
+      ],
+      "cta": "Elevate Your Game"
+    },
+    "groupLesson": {
+      "title": "Group Lessons",
+      "price": "From NT$149 per point",
+      "features": ["Flexible packages", "Learn and play with peers"],
+      "cta": "Join a Group"
+    },
+    "moreDetails": "Explore All Membership Perks",
+    "detailedInfo": {
+      "title": "Detailed Pricing Information",
+      "groupLessons": {
+        "title": "Group Lesson Packages",
+        "description": "Please refer to the monthly schedule for group lesson times and point requirements",
+        "tableHeaders": [
+          "Point Package",
+          "Package Price & Validity",
+          "Points",
+          "Average Price per Point"
+        ],
+        "packages": [
+          {
+            "name": "SINGLE",
+            "price": "$190 (7 days)",
+            "points": "1 point",
+            "averagePrice": "NT$190"
+          },
+          {
+            "name": "STARTER",
+            "price": "$7,500 (60 days)",
+            "points": "43 points",
+            "averagePrice": "NT$174"
+          },
+          {
+            "name": "REGULAR",
+            "price": "$13,800 (180 days)",
+            "points": "86 points",
+            "averagePrice": "NT$160"
+          },
+          {
+            "name": "GRANDE",
+            "price": "$19,000 (180 days)",
+            "points": "127 points",
+            "averagePrice": "NT$149"
+          }
+        ]
+      },
+      "coachLessons": {
+        "title": "Private Coaching Packages",
+        "tableHeaders": ["Package", "Price & Validity", "Average per Lesson"],
+        "packages": [
+          {
+            "name": "1-on-1 Coaching (10 lessons)",
+            "price": "$18,000 (180 days)",
+            "averagePrice": "NT$1,800/lesson (60 minutes)"
+          },
+          {
+            "name": "1-on-1 Coaching (20 lessons)",
+            "price": "$34,000 (365 days)",
+            "averagePrice": "NT$1,700/lesson (60 minutes)"
+          },
+          {
+            "name": "2-on-1 Coaching (10 lessons)",
+            "price": "$22,000 (180 days)",
+            "averagePrice": "NT$2,200/lesson (60 minutes)"
+          },
+          {
+            "name": "2-on-1 Coaching (20 lessons)",
+            "price": "$40,000 (365 days)",
+            "averagePrice": "NT$2,000/lesson (60 minutes)"
+          }
+        ]
+      },
+      "paymentInfo": {
+        "title": "Payment Information",
+        "accountName": "Account Name",
+        "accountNameValue": "Klutch Sports Equipment Co., Ltd.",
+        "bank": "Bank",
+        "bankValue": "E.Sun Commercial Bank 808",
+        "accountNumber": "Account Number",
+        "accountNumberValue": "054394068683",
+        "copyButton": "Copy Account Number"
+      },
+      "notes": {
+        "title": "Important Notes:",
+        "paymentMethod": "Group lessons & coaching sessions are payable by bank transfer only",
+        "confirmationInstruction": "After completing the transfer, please provide the following information via Line for confirmation:",
+        "requiredInfo": [
+          "Member name",
+          "Last 3 digits of your phone number",
+          "Last 3 digits of the transfer account number"
+        ],
+        "confirmation": "We will credit your points during business hours 🎾",
+        "provideInfo": "Please provide the following information for confirmation:"
+      }
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "questions": [
+      {
+        "question": "Court Usage Rules",
+        "answer": [
+          "For safety reasons, a maximum of two players are allowed on a court at any given time",
+          "Players must wear appropriate sports attire and non-marking tennis shoes on the court. Footwear that doesn't meet our venue regulations is not permitted",
+          "Chewing gum, food, and drinks (except water) are strictly prohibited on the courts"
+        ]
+      },
+      {
+        "question": "Lesson Booking Policy",
+        "answer": [
+          "To minimize disruptions, entry to lessons is not permitted 15 minutes after the scheduled start time",
+          "Online bookings close 6 hours before the lesson start time. For last-minute bookings within this 6-hour window, please call us or contact our LINE customer service to check availability"
+        ]
+      },
+      {
+        "question": "Lesson Package Terms",
+        "answer": [
+          "Lesson packages are valid from the date of purchase",
+          "Packages are non-transferable and non-shareable. One-time full transfers are allowed for a NT$400 fee (excluding trial packages)",
+          "Refunds are available if you're unable to attend, subject to a NT$400 processing fee. Used lessons will be deducted at the full single lesson rate",
+          "One-time extensions may be granted for qualifying reasons with proper documentation",
+          "Note: Common colds and menstruation are not considered valid reasons for extensions"
+        ]
+      },
+      {
+        "question": "Operating Hours",
+        "answer": ["10:00 AM to 10:00 PM daily"]
+      },
+      {
+        "question": "How to Get Here",
+        "answer": [
+          "MRT: Gangqian Station (Wenhu Line)",
+          "Bus: Alight at Yangguang Pumping Station"
+        ]
+      },
+      {
+        "question": "Parking Options",
+        "answer": [
+          "Ample street parking and paid lots are available in the vicinity"
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "title": "Connect with Le Klutch",
+    "subtitle": "We're Here for You",
+    "address": "2F, No. 2, Lane 181, Section 2, Jiuzong Road, Neihu District, Taipei City",
+    "phone": "02-2797-5889",
+    "hours": "Open Daily: 08:00AM - 20:00PM"
+  },
+  "footer": {
+    "copyright": "© 2023 Le Klutch Tennis Club. All rights reserved.",
+    "credits": "Crafted with passion by the Le Klutch Team"
+  }
+}

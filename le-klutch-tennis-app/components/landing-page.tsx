@@ -72,6 +72,40 @@ function AnimatedSection({
   );
 }
 
+// Accordion component
+function Accordion({ children }: { children: React.ReactNode }) {
+  return <div className="w-full">{children}</div>;
+}
+
+function AccordionItem({
+  value,
+  trigger,
+  children,
+}: {
+  value: string;
+  trigger: string;
+  children: React.ReactNode;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="border-b">
+      <button
+        className="flex justify-between w-full py-4 px-6 text-left"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {trigger}
+        <ChevronDown
+          className={`transform transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+      {isOpen && <div className="p-6">{children}</div>}
+    </div>
+  );
+}
+
 export function LandingPageComponent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -101,7 +135,7 @@ export function LandingPageComponent() {
               href="#about"
               className="hover:text-green-300 transition duration-300"
             >
-              ���於我們
+              關於我們
             </a>
             <a
               href="#facilities"
@@ -224,7 +258,7 @@ export function LandingPageComponent() {
                   />
                   <img
                     src="https://images.unsplash.com/photo-1542144582-1ba00456b5e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
-                    alt="網球��動員"
+                    alt="網球動員"
                     className="rounded-lg shadow-lg"
                   />
                   <img
@@ -538,6 +572,71 @@ export function LandingPageComponent() {
                   </DialogContent>
                 </Dialog>
               </div>
+            </div>
+          </section>
+        </AnimatedSection>
+
+        <AnimatedSection>
+          <section id="faq" className="py-20 bg-white">
+            <div className="container mx-auto px-4">
+              <h2 className="text-4xl font-bold mb-12 text-center">常見問題</h2>
+              <Accordion>
+                <AccordionItem value="item-1" trigger="球場使用規則">
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li>為維護消費者安全，球道內最多兩人同時擊球</li>
+                    <li>
+                      球道打擊區會員請務必穿著運動服裝及軟底運動鞋入場，禁止穿著不合場地使用規範之鞋類
+                    </li>
+                    <li>
+                      球道區嚴禁口香糖及攜帶任何食品、飲料入場 (開水、毛巾除外)
+                    </li>
+                  </ul>
+                </AccordionItem>
+                <AccordionItem value="item-2" trigger="課程預約規則">
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li>為維護其他消費者安全，開課15分鐘後即無法進入教室。</li>
+                    <li>
+                      訂課系統預約截止時間為開課前六小時，若開課前六小時內想預約上課，請來電洽詢或連繫LINE客服確認是否可以預約該課
+                    </li>
+                  </ul>
+                </AccordionItem>
+                <AccordionItem value="item-3" trigger="課程方案規則">
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li>課程方案購買當天立即生效，起算為第一天</li>
+                    <li>
+                      課程方案為個人制，無法共用。但可全數轉讓，無法部分轉讓且以一次為限。每筆轉讓均收NT$400一次性手續費（體驗課方案無法轉讓）。
+                    </li>
+                    <li>
+                      購課後因故無法參加可提供退費，每筆退費均收NT$600一次性手續費（已使用課程之扣款採單堂原價計算，不適用於多堂優惠方案）。
+                    </li>
+                    <li>
+                      購課後符合以下法定事由，在出示相關證明後享有一次延期機會：
+                      <ul className="list-disc pl-5 mt-2">
+                        <li>出國逾一個月</li>
+                        <li>身體不適</li>
+                        <li>家庭照顧</li>
+                        <li>服兵役</li>
+                        <li>遷居</li>
+                      </ul>
+                    </li>
+                    <li>
+                      一般感冒及女性生理期，不得申請病假且不適用於方案延期
+                    </li>
+                  </ul>
+                </AccordionItem>
+                <AccordionItem value="item-4" trigger="營業時間">
+                  <p>10:00AM~10:00PM</p>
+                </AccordionItem>
+                <AccordionItem value="item-5" trigger="交通資訊">
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li>捷運: 文湖線港墘站</li>
+                    <li>公車: 陽光抽水站</li>
+                  </ul>
+                </AccordionItem>
+                <AccordionItem value="item-6" trigger="停車資訊">
+                  <p>周遭有許多路邊停車格以及付費停車場</p>
+                </AccordionItem>
+              </Accordion>
             </div>
           </section>
         </AnimatedSection>

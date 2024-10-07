@@ -21,6 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import Image from "next/image";
 
 // Custom hook for intersection observer
 function useIntersectionObserver(options = {}) {
@@ -114,21 +115,34 @@ export function LandingPageComponent() {
     setIsClient(true);
   }, []);
 
+  // Extract image URLs into variables
+  const heroBackgroundUrl =
+    "https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
+  const tennisCourt1Url =
+    "https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80";
+  const tennisPlayerUrl =
+    "https://images.unsplash.com/photo-1542144582-1ba00456b5e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80";
+  const tennisCoachUrl =
+    "https://images.unsplash.com/photo-1591491653056-4e9d563a42de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80";
+  const tennisEquipmentUrl =
+    "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80";
+
   if (!isClient) {
     return null; // or a loading spinner
   }
 
   return (
-    <div className="min-h-screen bg-green-50">
-      <header className="bg-green-900 text-white p-4 fixed w-full z-10">
+    <div className="min-h-screen bg-[#004730]/10">
+      <header className="bg-[#004730] text-white p-4 fixed w-full z-10">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <img
-              src="/placeholder.svg?height=50&width=50"
+            <Image
+              src="/images/le-klutch-logo.png"
               alt="Le Klutch 標誌"
-              className="w-12 h-12"
+              width={48}
+              height={48}
             />
-            <h1 className="text-2xl font-bold">Le Klutch</h1>
+            <h1 className="text-2xl font-bold font-serif">Le Klutch</h1>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
             <a
@@ -155,48 +169,6 @@ export function LandingPageComponent() {
             >
               聯絡我們
             </a>
-            <div className="flex space-x-4">
-              <a
-                href="https://www.facebook.com/leklutchtennisclub"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Facebook
-                  size={24}
-                  className="hover:text-green-300 transition duration-300"
-                />
-              </a>
-              <a
-                href="https://www.instagram.com/leklutchtennisclub/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Instagram
-                  size={24}
-                  className="hover:text-green-300 transition duration-300"
-                />
-              </a>
-              <a
-                href="https://lin.ee/9bs6DF0"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="hover:text-green-300 transition duration-300"
-                >
-                  <path d="M15 8h.01M12 8h.01M9 8h.01M6 8h.01M21 12c0 4.418-4.477 8-10 8s-10-3.582-10-8 4.477-8 10-8 10 3.582 10 8z" />
-                </svg>
-              </a>
-            </div>
           </nav>
           <Button className="hidden md:block border border-current hover:bg-green-100 transition-colors">
             立即預約
@@ -209,8 +181,7 @@ export function LandingPageComponent() {
           id="hero"
           className="relative h-screen flex items-center justify-center bg-cover bg-center"
           style={{
-            backgroundImage:
-              'url("https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")',
+            backgroundImage: `url("${heroBackgroundUrl}")`,
           }}
         >
           <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -221,22 +192,79 @@ export function LandingPageComponent() {
             <p className="text-2xl mb-8">
               可奇室內網球 - 創造屬於您的 LE KLUTCH 時刻！
             </p>
-            <Button className="bg-green-600 hover:bg-green-700 text-white text-lg py-3 px-6">
-              開始您的旅程
-            </Button>
+            <div className="flex justify-center">
+              {" "}
+              {/* Add this container */}
+              <div className="flex space-x-4">
+                <a
+                  href="https://lin.ee/9bs6DF0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    stroke="none"
+                    className="hover:text-green-300 transition duration-300"
+                  >
+                    <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.105.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />
+                  </svg>
+                </a>
+                <a
+                  href="https://www.facebook.com/leklutchtennisclub"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Facebook
+                    size={24}
+                    className="hover:text-green-300 transition duration-300"
+                  />
+                </a>
+                <a
+                  href="https://www.instagram.com/leklutchtennisclub/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Instagram
+                    size={24}
+                    className="hover:text-green-300 transition duration-300"
+                  />
+                </a>
+              </div>
+            </div>
           </AnimatedSection>
         </section>
 
         <AnimatedSection>
-          <section id="about" className="py-20 bg-white">
+          <section id="about" className="py-20 bg-white scroll-mt-20">
             <div className="container mx-auto px-4">
-              <h2 className="text-4xl font-bold mb-12 text-center">關於我們</h2>
+              <h2 className="text-4xl font-bold mb-12 text-center">
+                LE KLUTCH
+              </h2>
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div>
                   <p className="text-lg mb-6">
                     LE KLUTCH
                     是指在關鍵時刻表現出色，這種獨特的成就源於練習和熱忱。
                     讓我們一起享受網球，創造我們自己的 LE KLUTCH 時刻！
+                  </p>
+                  <p className="text-lg mb-6">為什麼打網球？</p>
+                  <ol className="list-decimal list-inside text-lg mb-6 space-y-2">
+                    <li>一項有趣且充滿挑戰的運動</li>
+                    <li>能提高手眼協調能力</li>
+                    <li>幫助你保持活力和敏捷</li>
+                    <li>可以鍛煉你的戰略思維</li>
+                    <li>是一個社交互動的好機會</li>
+                    <li>能提升你的競爭力和自信心</li>
+                    <li>有機會挑戰自我和突破極限</li>
+                    <li>可以持續進步的運動，帶來成就感</li>
+                  </ol>
+                  <p className="text-lg mb-6">
+                    無論你是初學者還是有經驗的球員，網球都能為你帶來無窮樂趣和收穫。
+                    加入我們，一起體驗網球的魅力，創造屬於你的 LE KLUTCH 時刻！
                   </p>
                   <p className="text-lg mb-6">
                     我們致力於提供最優質的室內網球體驗，無論您是初學者還是專業選手，都能在這裡找到適合自己的課程和設施。
@@ -252,22 +280,22 @@ export function LandingPageComponent() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <img
-                    src="https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+                    src={tennisCourt1Url}
                     alt="網球場"
                     className="rounded-lg shadow-lg"
                   />
                   <img
-                    src="https://images.unsplash.com/photo-1542144582-1ba00456b5e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+                    src={tennisPlayerUrl}
                     alt="網球動員"
                     className="rounded-lg shadow-lg"
                   />
                   <img
-                    src="https://images.unsplash.com/photo-1591491653056-4e9d563a42de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+                    src={tennisCoachUrl}
                     alt="網球教練"
                     className="rounded-lg shadow-lg"
                   />
                   <img
-                    src="https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+                    src={tennisEquipmentUrl}
                     alt="網球設備"
                     className="rounded-lg shadow-lg"
                   />
@@ -278,7 +306,10 @@ export function LandingPageComponent() {
         </AnimatedSection>
 
         <AnimatedSection>
-          <section id="facilities" className="py-20 bg-green-50">
+          <section
+            id="facilities"
+            className="py-20 bg-[#004730]/10 scroll-mt-20"
+          >
             <div className="container mx-auto px-4">
               <h2 className="text-4xl font-bold mb-12 text-center">
                 世界級設施
@@ -314,13 +345,13 @@ export function LandingPageComponent() {
         </AnimatedSection>
 
         <AnimatedSection>
-          <section id="pricing" className="py-20 bg-white">
+          <section id="pricing" className="py-20 bg-white scroll-mt-20">
             <div className="container mx-auto px-4">
               <h2 className="text-4xl font-bold mb-12 text-center">
                 會員與價格
               </h2>
               <div className="grid md:grid-cols-3 gap-8">
-                <Card className="bg-green-50 shadow-md hover:shadow-xl transition duration-300">
+                <Card className="bg-[#004730]/10 shadow-md hover:shadow-xl transition duration-300">
                   <CardContent className="p-6">
                     <h3 className="text-2xl font-bold mb-4 text-center">
                       單堂購買
@@ -349,7 +380,7 @@ export function LandingPageComponent() {
                     </Button>
                   </CardContent>
                 </Card>
-                <Card className="bg-green-100 shadow-md hover:shadow-xl transition duration-300 transform scale-105">
+                <Card className="bg-[#004730]/20 shadow-md hover:shadow-xl transition duration-300 transform scale-105">
                   <CardContent className="p-6">
                     <h3 className="text-2xl font-bold mb-4 text-center">
                       教練課
@@ -375,7 +406,7 @@ export function LandingPageComponent() {
                     </Button>
                   </CardContent>
                 </Card>
-                <Card className="bg-green-50 shadow-md hover:shadow-xl transition duration-300">
+                <Card className="bg-[#004730]/10 shadow-md hover:shadow-xl transition duration-300">
                   <CardContent className="p-6">
                     <h3 className="text-2xl font-bold mb-4 text-center">
                       團體課
@@ -596,7 +627,7 @@ export function LandingPageComponent() {
                   <ul className="list-disc pl-5 space-y-2">
                     <li>為維護其他消費者安全，開課15分鐘後即無法進入教室。</li>
                     <li>
-                      訂課系統預約截止時間為開課前六小時，若開課前六小時內想預約上課，請來電洽詢或連繫LINE客服確認是否可以預約該課
+                      訂課系統預約截止時間為開課前六小時，若開課六小時內想約上課，請來電洽詢或連繫LINE客服確認是否可以預約該課
                     </li>
                   </ul>
                 </AccordionItem>
@@ -642,7 +673,10 @@ export function LandingPageComponent() {
         </AnimatedSection>
 
         <AnimatedSection>
-          <section id="contact" className="py-20 bg-green-800 text-white">
+          <section
+            id="contact"
+            className="py-20 bg-[#004730] text-white scroll-mt-20"
+          >
             <div className="container mx-auto px-4">
               <h2 className="text-4xl font-bold mb-12 text-center">聯絡我們</h2>
               <div className="grid md:grid-cols-2 gap-12">
@@ -707,7 +741,7 @@ export function LandingPageComponent() {
                 </div>
                 <div>
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.4400872756455!2d121.57607661500708!3d25.06073998396407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442ab7a36efa291%3A0x3e1c7f0c0f8f8f8f!2s181%20Jiuzong%20Rd%2C%20Neihu%20District%2C%20Taipei%20City%2C%20Taiwan%20114!5e0!3m2!1sen!2s!4v1620000000000!5m2!1sen!2s"
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14455.573594174992!2d121.574743!3d25.071602!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442ac797d43166f%3A0xe74037b25677c94b!2z5aSn5ryi56eR5oqA57i96YOo56ys5LiA5pyf!5e0!3m2!1szh-TW!2stw!4v1728294876348!5m2!1szh-TW!2stw"
                     width="100%"
                     height="300"
                     style={{ border: 0 }}
@@ -721,7 +755,7 @@ export function LandingPageComponent() {
         </AnimatedSection>
       </main>
 
-      <footer className="bg-green-900 text-white py-8">
+      <footer className="bg-[#004730] text-white py-8">
         <div className="container mx-auto px-4 text-center">
           <p>&copy; 2023 Le Klutch 網球俱樂部。保留所有權利。</p>
           <p className="mt-2">設計與開發 by Le Klutch 團隊</p>

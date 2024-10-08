@@ -2,7 +2,8 @@
   "header": {
     "title": "Le Klutch",
     "nav": {
-      "about": "關於我們",
+      "news": "最新消息",
+      "about": "可奇室內網球",
       "facilities": "設施",
       "pricing": "價格",
       "contact": "聯絡我們"
@@ -12,6 +13,37 @@
   "hero": {
     "title": "歡迎來到 Le Klutch 網球俱樂部",
     "subtitle": "可奇室內網球 - 創造屬於您的 LE KLUTCH 時刻！"
+  },
+  "news": {
+    "title": "最新消息",
+    "viewMore": "查看更多",
+    "news": [
+      {
+        "title": "夏季特別課程開始報名",
+        "description": "我們的夏季特別課程現已開放報名，適合各年齡層的網球愛好者。",
+        "link": "https://www.instagram.com/reel/DA2a49wxSG3"
+      },
+      {
+        "title": "新教練加入團隊",
+        "description": "我們很高興地宣布，前職業選手王小明教練已加入我們的教練團隊。",
+        "link": "https://www.instagram.com/reel/DA0fFz8xtdq"
+      },
+      {
+        "title": "場地維護通知",
+        "description": "為了提供更好的打球體驗，我們將於本月進行場地維護工作。",
+        "link": "https://www.instagram.com/reel/DAAFRtGTs0p"
+      },
+      {
+        "title": "週末特別活動",
+        "description": "本週末我們將舉辦一場友誼賽，歡迎所有會員參加。",
+        "link": "https://www.instagram.com/reel/DAAFRtGTs0p"
+      },
+      {
+        "title": "五月優惠活動",
+        "description": "五月份報名課程可享受9折優惠，機會難得，請把握機會！",
+        "link": "https://www.instagram.com/reel/DA0fFz8xtdq"
+      }
+    ]
   },
   "about": {
     "title": "LE KLUTCH - 可奇室內網球俱樂部",
@@ -86,12 +118,7 @@
       "groupLessons": {
         "title": "團課方案價目表",
         "description": "團課時段及課程點數請參閱單月課表",
-        "tableHeaders": [
-          "點數套餐",
-          "套票價格 & 有效期限",
-          "點數",
-          "每點平均價"
-        ],
+        "tableHeaders": ["點數套餐", "套票價格 & 有效期限", "點數", "每點平均價"],
         "packages": [
           {
             "name": "一點 SINGLE",
@@ -215,7 +242,7 @@
     "hours": "08:00AM~20:00PM"
   },
   "footer": {
-    "copyright": "© 2023 Le Klutch 網球俱樂部。保留所有權利。",
+    "copyright": "© 2024 Le Klutch 網球俱樂部。保留所有權利。",
     "credits": "設計與開發 by Le Klutch 團隊"
   }
 }

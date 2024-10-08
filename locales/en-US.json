@@ -2,6 +2,7 @@
   "header": {
     "title": "Le Klutch",
     "nav": {
+      "news": "News",
       "about": "Story",
       "facilities": "Facilities",
       "pricing": "Pricing",
@@ -219,7 +220,43 @@
     "hours": "Open Daily: 08:00AM - 20:00PM"
   },
   "footer": {
-    "copyright": "© 2023 Le Klutch Tennis Club. All rights reserved.",
+    "copyright": "© 2024 Le Klutch Tennis Club. All rights reserved.",
     "credits": "Crafted with passion by the Le Klutch Team"
+  },
+  "news": {
+    "title": "Latest News",
+    "viewMore": "View More",
+    "news": [
+      {
+        "date": "July 1, 2023",
+        "title": "Summer Special Course Registration Open",
+        "description": "Our summer special courses are now open for registration, suitable for tennis enthusiasts of all ages.",
+        "link": "https://www.instagram.com/reel/DA2a49wxSG3"
+      },
+      {
+        "date": "June 15, 2023",
+        "title": "New Coach Joins the Team",
+        "description": "We are excited to announce that former professional player Coach John Doe has joined our coaching team.",
+        "link": "https://www.instagram.com/reel/DA0fFz8xtdq"
+      },
+      {
+        "date": "June 1, 2023",
+        "title": "Court Maintenance Notice",
+        "description": "To provide a better playing experience, we will be conducting court maintenance work this month.",
+        "link": "https://www.instagram.com/reel/DAAFRtGTs0p"
+      },
+      {
+        "date": "May 15, 2023",
+        "title": "Weekend Special Event",
+        "description": "We're hosting a friendly tournament this weekend. All members are welcome to join!",
+        "link": "https://www.instagram.com/reel/DAAFRtGTs0p"
+      },
+      {
+        "date": "May 1, 2023",
+        "title": "May Promotion",
+        "description": "Enjoy a 10% discount on all courses booked in May. Don't miss this great opportunity!",
+        "link": "https://www.instagram.com/reel/DA0fFz8xtdq"
+      }
+    ]
   }
 }

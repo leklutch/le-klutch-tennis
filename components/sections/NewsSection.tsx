@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,10 +6,23 @@ import { useSwipeable } from 'react-swipeable';
 import { Loader2 } from 'lucide-react';
 
 interface News {
-  date: string;
-  title: string;
-  description: string;
+  title: {
+    'zh-TW': string;
+    'en-US': string;
+  };
+  description: {
+    'zh-TW': string;
+    'en-US': string;
+  };
   link: string;
+}
+
+interface NewsSectionProps {
+  content: {
+    title: string;
+    news: News[];
+  };
+  language: string;
 }
 
 interface GlobalWindow extends Window {
@@ -20,14 +33,7 @@ interface GlobalWindow extends Window {
   };
 }
 
-interface NewsSectionProps {
-  content: {
-    title: string;
-    news: News[];
-  };
-}
-
-const NewsSection: React.FC<NewsSectionProps> = ({ content }) => {
+const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -51,8 +57,9 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content }) => {
     document.body.appendChild(script);
 
     script.onload = () => {
-      if ((window as GlobalWindow).instgrm) {
-        (window as GlobalWindow).instgrm?.Embeds.process();
+      const globalWindow = window as unknown as GlobalWindow;
+      if (globalWindow.instgrm) {
+        globalWindow.instgrm.Embeds.process();
       }
     };
 
@@ -67,19 +74,29 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content }) => {
   //   }
   // }, [currentIndex]);
 
-  const nextNews = () => {
+  // 保留這個 useEffect，它在語言變化時重置當前索引
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [language]);
+
+  // 使用 useCallback 來記憶這些函數，避免不必要的重新渲染
+  const nextNews = useCallback(() => {
     setCurrentIndex((prevIndex) =>
       prevIndex + (isMobile ? 1 : 3) >= content.news.length ? 0 : prevIndex + (isMobile ? 1 : 3)
     );
-  };
+  }, [content.news.length, isMobile]);
 
-  const prevNews = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0
-        ? Math.max(0, content.news.length - (isMobile ? 1 : 3))
-        : prevIndex - (isMobile ? 1 : 3)
-    );
-  };
+  const prevNews = useCallback(() => {
+    setCurrentIndex((prevIndex) => {
+      const totalItems = content.news.length;
+      const itemsPerPage = isMobile ? 1 : 3;
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      if (prevIndex === 0) {
+        return (totalPages - 1) * itemsPerPage;
+      }
+      return Math.max(0, prevIndex - itemsPerPage);
+    });
+  }, [content.news.length, isMobile]);
 
   const handlers = useSwipeable({
     onSwipedLeft: nextNews,
@@ -107,16 +124,19 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content }) => {
             >
               {content.news.map((news, index) => (
                 <div
-                  key={index}
+                  key={`${language}-${index}`} // 修改 key 以包含語言
                   className={`${isMobile ? 'w-full' : 'w-1/3'} flex-shrink-0 flex-grow-0 ${
                     isMobile ? 'px-0' : 'px-2'
                   }`}
                 >
                   <Card className="h-full">
                     <CardContent className="p-6">
-                      <p className="text-sm text-gray-500 mb-2">{news.date}</p>
-                      <h3 className="text-xl font-semibold mb-2">{news.title}</h3>
-                      <p className="text-gray-700 mb-4">{news.description}</p>
+                      <h3 className="text-xl font-semibold mb-2 whitespace-pre-line">
+                        {news.title[language as keyof typeof news.title]}
+                      </h3>
+                      <p className="text-gray-700 mb-4 whitespace-pre-line">
+                        {news.description[language as keyof typeof news.description]}
+                      </p>
 
                       {/* check if link is instagram post if not using <a> tag to open in new tab */}
                       {news.link.includes('instagram.com') ? (
@@ -180,7 +200,9 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content }) => {
               <button
                 key={index}
                 className={`h-2 w-2 rounded-full mx-1 ${
-                  index === Math.floor(currentIndex / (isMobile ? 1 : 3))
+                  index ===
+                  (currentIndex / (isMobile ? 1 : 3)) %
+                    Math.ceil(content.news.length / (isMobile ? 1 : 3))
                     ? 'bg-green-600'
                     : 'bg-gray-300'
                 }`}
@@ -194,4 +216,4 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content }) => {
   );
 };
 
-export default NewsSection;
+export default React.memo(NewsSection); // 使用 React.memo 來優化性能

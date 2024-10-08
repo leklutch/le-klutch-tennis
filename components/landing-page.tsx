@@ -48,6 +48,7 @@ import FAQSection from './sections/FAQSection';
 import ContactSection from './sections/ContactSection';
 import HeroSection from './sections/HeroSection';
 import NewsSection from './sections/NewsSection';
+import { parse } from 'yaml';
 
 // 定義支持的語言列表
 const SUPPORTED_LANGUAGES = ['zh-TW', 'en-US'];
@@ -80,6 +81,19 @@ function useIntersectionObserver(options = {}) {
   return [ref, isIntersecting];
 }
 
+// 更新 News 類型定義
+type News = {
+  title: {
+    'zh-TW': string;
+    'en-US': string;
+  };
+  description: {
+    'zh-TW': string;
+    'en-US': string;
+  };
+  link: string;
+};
+
 // Add this type definition
 type ContentType = {
   header: {
@@ -93,7 +107,10 @@ type ContentType = {
     cta: string;
   };
   hero: object;
-  news: object;
+  news: {
+    title: string;
+    news: News[];
+  };
   about: object;
   facilities: object;
   pricing: object;
@@ -101,7 +118,7 @@ type ContentType = {
   footer: object;
 };
 
-export function LandingPageComponent() {
+export function LandingPageComponent({ initialNewsData }: { initialNewsData: News[] }) {
   const [isClient, setIsClient] = useState(false);
 
   const [currentLanguage, setCurrentLanguage] = useState('zh-TW');
@@ -149,12 +166,6 @@ export function LandingPageComponent() {
   useEffect(() => {
     setIsClient(true);
   }, []);
-
-  // Extract image URLs into variables
-  const heroBackgroundUrl =
-    'https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
-
-  const featureIcons = [Users, Award, Activity, Brain];
 
   if (!isClient) {
     return null; // or a loading spinner
@@ -234,7 +245,14 @@ export function LandingPageComponent() {
         <HeroSection content={content.hero} />
 
         <AnimatedSection>
-          <NewsSection content={content.news} />
+          <NewsSection
+            key={currentLanguage} // Add this line
+            content={{
+              title: content.news.title,
+              news: initialNewsData,
+            }}
+            language={currentLanguage}
+          />
         </AnimatedSection>
 
         <AnimatedSection>
@@ -254,7 +272,7 @@ export function LandingPageComponent() {
         </AnimatedSection>
 
         <AnimatedSection>
-          <FAQSection content={content.faq} />
+          <FAQSection content={content.faq as object} />
         </AnimatedSection>
 
         <AnimatedSection>
@@ -264,8 +282,8 @@ export function LandingPageComponent() {
 
       <footer className="bg-[#064423] text-white py-8">
         <div className="container mx-auto px-4 text-center">
-          <p>{content.footer.copyright}</p>
-          <p className="mt-2">{content.footer.credits}</p>
+          <p>{(content.footer as { copyright: string }).copyright}</p>
+          <p className="mt-2">{(content.footer as { credits: string }).credits}</p>
         </div>
       </footer>
     </div>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Head from "next/head";
@@ -44,6 +44,12 @@ export const metadata: Metadata = {
     description:
       "LE KLUTCH 可奇室內網球俱樂部提供頂級室內網球場地、專業網球教學、網球課程與訓練。位於台北內湖，是您提升網球技巧的最佳選擇。立即預約，體驗可奇網球的魅力！",
     images: ["https://leklutchtennisclub.com/images/le-klutch-logo.png"], // 替換為您的 Twitter 圖片 URL
+  },
+  alternates: {
+    languages: {
+      "zh-TW": "/zh-TW",
+      "en-US": "/en-US",
+    },
   },
 };
 

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Facebook,
   Instagram,
@@ -19,25 +19,25 @@ import {
   Shield,
   Dumbbell,
   Coffee,
-} from 'lucide-react';
+} from "lucide-react";
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import Image from 'next/image';
-import { Noto_Sans_TC, Noto_Serif_TC } from 'next/font/google';
-import { Suspense } from 'react';
-import { ClientLanguageSelector } from './client-wrapper';
+} from "@/components/ui/dialog";
+import Image from "next/image";
+import { Noto_Sans_TC, Noto_Serif_TC } from "next/font/google";
+import { Suspense } from "react";
+import { ClientLanguageSelector } from "./client-wrapper";
 
 // import { useSearchParams } from 'next/navigation';
 
-import { Menu } from 'lucide-react';
-import * as SelectPrimitive from '@radix-ui/react-select';
+import { Menu } from "lucide-react";
+import * as SelectPrimitive from "@radix-ui/react-select";
 
 export const Select = SelectPrimitive.Root;
 export const SelectGroup = SelectPrimitive.Group;
@@ -46,15 +46,15 @@ export const SelectTrigger = SelectPrimitive.Trigger;
 export const SelectContent = SelectPrimitive.Content;
 export const SelectItem = SelectPrimitive.Item;
 
-import zhTW from '@/locales/zh-TW.json';
-import enUS from '@/locales/en-US.json';
+import zhTW from "@/locales/zh-TW.json";
+import enUS from "@/locales/en-US.json";
 
 // 定義支持的語言列表
-const SUPPORTED_LANGUAGES = ['zh-TW', 'en-US'];
+const SUPPORTED_LANGUAGES = ["zh-TW", "en-US"];
 
 // 初始化字體
-const notoSansTC = Noto_Sans_TC({ subsets: ['latin'] });
-const notoSerifTC = Noto_Serif_TC({ subsets: ['latin'], weight: '700' });
+const notoSansTC = Noto_Sans_TC({ subsets: ["latin"] });
+const notoSerifTC = Noto_Serif_TC({ subsets: ["latin"], weight: "700" });
 
 // Custom hook for intersection observer
 function useIntersectionObserver(options = {}) {
@@ -82,7 +82,7 @@ function useIntersectionObserver(options = {}) {
 // Animated section component
 function AnimatedSection({
   children,
-  className = '',
+  className = "",
 }: {
   children: React.ReactNode;
   className?: string;
@@ -96,7 +96,9 @@ function AnimatedSection({
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
       className={`transition-all duration-1000 ${
-        isIntersecting ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        isIntersecting
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 translate-y-10"
       } ${className}`}
     >
       {children}
@@ -109,7 +111,13 @@ function Accordion({ children }: { children: React.ReactNode }) {
   return <div className="w-full">{children}</div>;
 }
 
-function AccordionItem({ trigger, children }: { trigger: string; children: React.ReactNode }) {
+function AccordionItem({
+  trigger,
+  children,
+}: {
+  trigger: string;
+  children: React.ReactNode;
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -120,7 +128,9 @@ function AccordionItem({ trigger, children }: { trigger: string; children: React
       >
         <span className="text-lg font-semibold text-green-800">{trigger}</span>
         <ChevronDown
-          className={`transform transition-transform ${isOpen ? 'rotate-180' : ''} text-green-600`}
+          className={`transform transition-transform ${
+            isOpen ? "rotate-180" : ""
+          } text-green-600`}
         />
       </button>
       {isOpen && <div className="p-6">{children}</div>}
@@ -128,58 +138,16 @@ function AccordionItem({ trigger, children }: { trigger: string; children: React
   );
 }
 
-// function LanguageSelector({
-//   loadLanguageContent,
-// }: {
-//   loadLanguageContent: (lang: string) => void;
-// }) {
-//   const searchParams = useSearchParams();
-//   const [currentLanguage, setCurrentLanguage] = useState('zh-TW');
-
-//   useEffect(() => {
-//     const langParam = searchParams?.get('lang');
-//     if (langParam) {
-//       loadLanguageContent(langParam);
-//       setCurrentLanguage(langParam);
-//     } else {
-//       const storedLang = localStorage.getItem('language');
-//       if (storedLang) {
-//         loadLanguageContent(storedLang);
-//         setCurrentLanguage(storedLang);
-//       }
-//     }
-//   }, [searchParams, loadLanguageContent]);
-
-//   return (
-//     <div className="flex space-x-2">
-//       <Button
-//         variant={currentLanguage === 'zh-TW' ? 'secondary' : 'ghost'}
-//         className="px-2 py-1 text-sm"
-//         onClick={() => loadLanguageContent('zh-TW')}
-//       >
-//         中文
-//       </Button>
-//       <Button
-//         variant={currentLanguage === 'en-US' ? 'secondary' : 'ghost'}
-//         className="px-2 py-1 text-sm"
-//         onClick={() => loadLanguageContent('en-US')}
-//       >
-//         English
-//       </Button>
-//     </div>
-//   );
-// }
-
 export function LandingPageComponent() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState('zh-TW');
+  const [currentLanguage, setCurrentLanguage] = useState("zh-TW");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     // 初始化時從 localStorage 或其他地方獲取當前語言
-    const savedLanguage = localStorage.getItem('language') || 'zh-TW';
+    const savedLanguage = localStorage.getItem("language") || "zh-TW";
     setCurrentLanguage(savedLanguage);
     loadLanguageContent(savedLanguage);
   }, []);
@@ -187,32 +155,32 @@ export function LandingPageComponent() {
   const handleLanguageChange = (value: string) => {
     setCurrentLanguage(value);
     loadLanguageContent(value);
-    localStorage.setItem('language', value);
+    localStorage.setItem("language", value);
   };
 
   const [content, setContent] = useState(zhTW);
   const loadLanguageContent = useCallback((lang: string) => {
     try {
       if (!SUPPORTED_LANGUAGES.includes(lang)) {
-        throw new Error('Unsupported language');
+        throw new Error("Unsupported language");
       }
-      const newContent = lang === 'zh-TW' ? zhTW : enUS;
+      const newContent = lang === "zh-TW" ? zhTW : enUS;
       setContent(newContent);
-      localStorage.setItem('language', lang);
+      localStorage.setItem("language", lang);
 
       // Update URL
       const url = new URL(window.location.href);
-      url.searchParams.set('lang', lang);
-      window.history.pushState({}, '', url);
+      url.searchParams.set("lang", lang);
+      window.history.pushState({}, "", url);
     } catch (error) {
       console.error(`Failed to load language: ${lang}`, error);
       setContent(zhTW);
-      localStorage.setItem('language', 'zh-TW');
+      localStorage.setItem("language", "zh-TW");
 
       // Update URL to default language
       const url = new URL(window.location.href);
-      url.searchParams.set('lang', 'zh-TW');
-      window.history.pushState({}, '', url);
+      url.searchParams.set("lang", "zh-TW");
+      window.history.pushState({}, "", url);
     }
   }, []);
 
@@ -227,16 +195,16 @@ export function LandingPageComponent() {
         setTimeout(() => setCopied(false), 2000);
       });
     } else {
-      const textArea = document.createElement('textarea');
+      const textArea = document.createElement("textarea");
       textArea.value = text;
       document.body.appendChild(textArea);
       textArea.select();
       try {
-        document.execCommand('copy');
+        document.execCommand("copy");
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       } catch (err) {
-        console.error('Failed to copy text: ', err);
+        console.error("Failed to copy text: ", err);
       }
       document.body.removeChild(textArea);
     }
@@ -244,7 +212,7 @@ export function LandingPageComponent() {
 
   // Extract image URLs into variables
   const heroBackgroundUrl =
-    'https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
+    "https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
 
   const featureIcons = [Users, Award, Activity, Brain];
 
@@ -263,7 +231,9 @@ export function LandingPageComponent() {
               width={48}
               height={48}
             />
-            <h1 className="text-2xl font-bold font-serif">{content.header.title}</h1>
+            <h1 className="text-2xl font-bold font-serif">
+              {content.header.title}
+            </h1>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
             {Object.entries(content.header.nav).map(([key, value]) => (
@@ -278,9 +248,14 @@ export function LandingPageComponent() {
           </nav>
           <div className="flex items-center space-x-4">
             <div className="md:hidden">
-              <Select value={currentLanguage} onValueChange={handleLanguageChange}>
+              <Select
+                value={currentLanguage}
+                onValueChange={handleLanguageChange}
+              >
                 <SelectTrigger className="w-[70px]">
-                  <SelectValue>{currentLanguage === 'zh-TW' ? '中文' : 'EN'}</SelectValue>
+                  <SelectValue>
+                    {currentLanguage === "zh-TW" ? "中文" : "EN"}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="zh-TW">中文</SelectItem>
@@ -289,11 +264,13 @@ export function LandingPageComponent() {
               </Select>
             </div>
             <div className="hidden md:block">
-              <ClientLanguageSelector loadLanguageContent={loadLanguageContent} />
+              <ClientLanguageSelector
+                loadLanguageContent={loadLanguageContent}
+              />
             </div>
             <Button
               className="border border-current hover:bg-green-100 transition-colors"
-              onClick={() => window.open('https://lin.ee/9bs6DF0', '_blank')}
+              onClick={() => window.open("https://lin.ee/9bs6DF0", "_blank")}
             >
               {content.header.cta}
             </Button>
@@ -327,7 +304,7 @@ export function LandingPageComponent() {
           id="hero"
           className="relative h-screen flex items-center justify-center bg-cover bg-center"
           style={{
-            backgroundImage: `url("${heroBackgroundUrl}")`,
+            backgroundImage: `url("/images/cover.jpg")`,
           }}
         >
           <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -335,10 +312,14 @@ export function LandingPageComponent() {
             <h2 className="text-5xl font-bold mb-4">{content.hero.title}</h2>
             <p className="text-2xl mb-8">{content.hero.subtitle}</p>
             <div className="flex justify-center">
-              {' '}
+              {" "}
               {/* Add this container */}
               <div className="flex space-x-4">
-                <a href="https://lin.ee/9bs6DF0" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://lin.ee/9bs6DF0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -356,14 +337,20 @@ export function LandingPageComponent() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Instagram size={24} className="hover:text-green-300 transition duration-300" />
+                  <Instagram
+                    size={24}
+                    className="hover:text-green-300 transition duration-300"
+                  />
                 </a>
                 <a
                   href="https://www.facebook.com/leklutchtennisclub"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Facebook size={24} className="hover:text-green-300 transition duration-300" />
+                  <Facebook
+                    size={24}
+                    className="hover:text-green-300 transition duration-300"
+                  />
                 </a>
               </div>
             </div>
@@ -411,13 +398,17 @@ export function LandingPageComponent() {
                     <h3 className="text-3xl font-bold mb-4 text-center">
                       {content.about.promotion.title}
                     </h3>
-                    <p className="text-2xl mb-2 text-center">{content.about.promotion.price}</p>
+                    <p className="text-2xl mb-2 text-center">
+                      {content.about.promotion.price}
+                    </p>
                     <p className="text-lg mb-6 font-semibold text-center">
                       {content.about.promotion.description}
                     </p>
                     <Button
                       className="w-full bg-white text-green-600 hover:bg-green-50 transition-colors text-lg py-3 font-bold"
-                      onClick={() => window.open('https://lin.ee/9bs6DF0', '_blank')}
+                      onClick={() =>
+                        window.open("https://lin.ee/9bs6DF0", "_blank")
+                      }
                     >
                       {content.about.promotion.cta}
                     </Button>
@@ -439,9 +430,14 @@ export function LandingPageComponent() {
               </p>
               <div className="grid md:grid-cols-3 gap-8">
                 {content.facilities.features.map((feature, index) => {
-                  const Icon = [MapPin, Clock, Shield, Users, Dumbbell, Coffee][index % 6];
+                  const Icon = [MapPin, Clock, Shield, Users, Dumbbell, Coffee][
+                    index % 6
+                  ];
                   return (
-                    <div key={index} className="bg-white p-6 rounded-xl shadow-lg flex items-start">
+                    <div
+                      key={index}
+                      className="bg-white p-6 rounded-xl shadow-lg flex items-start"
+                    >
                       <Icon className="w-8 h-8 text-green-600 mr-4 flex-shrink-0" />
                       <div>
                         <h3 className="text-xl font-semibold mb-2 text-green-700">
@@ -459,7 +455,9 @@ export function LandingPageComponent() {
         <AnimatedSection>
           <section id="pricing" className="py-20 bg-white scroll-mt-20">
             <div className="container mx-auto px-4">
-              <h2 className="text-4xl font-bold mb-12 text-center">{content.pricing.title}</h2>
+              <h2 className="text-4xl font-bold mb-12 text-center">
+                {content.pricing.title}
+              </h2>
               <div className="grid md:grid-cols-3 gap-8">
                 <Card className="bg-[#064423]/5 shadow-md hover:shadow-xl transition duration-300">
                   <CardContent className="p-6">
@@ -470,15 +468,20 @@ export function LandingPageComponent() {
                       {content.pricing.singlePurchase.price}
                     </p>
                     <ul className="space-y-2 mb-6">
-                      {content.pricing.singlePurchase.features.map((feature, index) => (
-                        <li key={index} className="flex items-center">
-                          <ChevronDown className="text-green-600 mr-2" /> {feature}
-                        </li>
-                      ))}
+                      {content.pricing.singlePurchase.features.map(
+                        (feature, index) => (
+                          <li key={index} className="flex items-center">
+                            <ChevronDown className="text-green-600 mr-2" />{" "}
+                            {feature}
+                          </li>
+                        )
+                      )}
                     </ul>
                     <Button
                       className="w-full bg-green-600 hover:bg-green-700 text-white"
-                      onClick={() => window.open('https://lin.ee/9bs6DF0', '_blank')}
+                      onClick={() =>
+                        window.open("https://lin.ee/9bs6DF0", "_blank")
+                      }
                     >
                       {content.pricing.singlePurchase.cta}
                     </Button>
@@ -494,11 +497,14 @@ export function LandingPageComponent() {
                       {content.pricing.coachLesson.price}
                     </p>
                     <ul className="space-y-2 mb-6">
-                      {content.pricing.coachLesson.features.map((feature, index) => (
-                        <li key={index} className="flex items-center">
-                          <ChevronDown className="text-green-600 mr-2" /> {feature}
-                        </li>
-                      ))}
+                      {content.pricing.coachLesson.features.map(
+                        (feature, index) => (
+                          <li key={index} className="flex items-center">
+                            <ChevronDown className="text-green-600 mr-2" />{" "}
+                            {feature}
+                          </li>
+                        )
+                      )}
                     </ul>
                     <Button
                       className="w-full bg-green-600 hover:bg-green-700 text-white"
@@ -518,11 +524,14 @@ export function LandingPageComponent() {
                       {content.pricing.groupLesson.price}
                     </p>
                     <ul className="space-y-2 mb-6">
-                      {content.pricing.groupLesson.features.map((feature, index) => (
-                        <li key={index} className="flex items-center">
-                          <ChevronDown className="text-green-600 mr-2" /> {feature}
-                        </li>
-                      ))}
+                      {content.pricing.groupLesson.features.map(
+                        (feature, index) => (
+                          <li key={index} className="flex items-center">
+                            <ChevronDown className="text-green-600 mr-2" />{" "}
+                            {feature}
+                          </li>
+                        )
+                      )}
                     </ul>
                     <Button
                       className="w-full bg-green-600 hover:bg-green-700 text-white"
@@ -542,7 +551,9 @@ export function LandingPageComponent() {
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl">
                     <DialogHeader>
-                      <DialogTitle>{content.pricing.detailedInfo.title}</DialogTitle>
+                      <DialogTitle>
+                        {content.pricing.detailedInfo.title}
+                      </DialogTitle>
                     </DialogHeader>
                     <div className="overflow-y-auto max-h-[70vh]">
                       <h3 className="text-2xl font-bold mt-4 mb-2">
@@ -556,7 +567,10 @@ export function LandingPageComponent() {
                           <tr className="bg-green-100">
                             {content.pricing.detailedInfo.groupLessons.tableHeaders.map(
                               (header, index) => (
-                                <th key={index} className="border border-gray-300 p-2">
+                                <th
+                                  key={index}
+                                  className="border border-gray-300 p-2"
+                                >
                                   {header}
                                 </th>
                               )
@@ -564,14 +578,24 @@ export function LandingPageComponent() {
                           </tr>
                         </thead>
                         <tbody>
-                          {content.pricing.detailedInfo.groupLessons.packages.map((pkg, index) => (
-                            <tr key={index}>
-                              <td className="border border-gray-300 p-2">{pkg.name}</td>
-                              <td className="border border-gray-300 p-2">{pkg.price}</td>
-                              <td className="border border-gray-300 p-2">{pkg.points}</td>
-                              <td className="border border-gray-300 p-2">{pkg.averagePrice}</td>
-                            </tr>
-                          ))}
+                          {content.pricing.detailedInfo.groupLessons.packages.map(
+                            (pkg, index) => (
+                              <tr key={index}>
+                                <td className="border border-gray-300 p-2">
+                                  {pkg.name}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {pkg.price}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {pkg.points}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {pkg.averagePrice}
+                                </td>
+                              </tr>
+                            )
+                          )}
                         </tbody>
                       </table>
 
@@ -583,7 +607,10 @@ export function LandingPageComponent() {
                           <tr className="bg-green-100">
                             {content.pricing.detailedInfo.coachLessons.tableHeaders.map(
                               (header, index) => (
-                                <th key={index} className="border border-gray-300 p-2">
+                                <th
+                                  key={index}
+                                  className="border border-gray-300 p-2"
+                                >
                                   {header}
                                 </th>
                               )
@@ -591,13 +618,21 @@ export function LandingPageComponent() {
                           </tr>
                         </thead>
                         <tbody>
-                          {content.pricing.detailedInfo.coachLessons.packages.map((pkg, index) => (
-                            <tr key={index}>
-                              <td className="border border-gray-300 p-2">{pkg.name}</td>
-                              <td className="border border-gray-300 p-2">{pkg.price}</td>
-                              <td className="border border-gray-300 p-2">{pkg.averagePrice}</td>
-                            </tr>
-                          ))}
+                          {content.pricing.detailedInfo.coachLessons.packages.map(
+                            (pkg, index) => (
+                              <tr key={index}>
+                                <td className="border border-gray-300 p-2">
+                                  {pkg.name}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {pkg.price}
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                  {pkg.averagePrice}
+                                </td>
+                              </tr>
+                            )
+                          )}
                         </tbody>
                       </table>
                       <h3 className="text-2xl font-bold mt-6 mb-2">
@@ -608,10 +643,16 @@ export function LandingPageComponent() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="space-y-2">
                             <p className="font-semibold">
-                              {content.pricing.detailedInfo.paymentInfo.accountName}
+                              {
+                                content.pricing.detailedInfo.paymentInfo
+                                  .accountName
+                              }
                             </p>
                             <p className="text-gray-700">
-                              {content.pricing.detailedInfo.paymentInfo.accountNameValue}
+                              {
+                                content.pricing.detailedInfo.paymentInfo
+                                  .accountNameValue
+                              }
                             </p>
                           </div>
                           <div className="space-y-2">
@@ -619,25 +660,38 @@ export function LandingPageComponent() {
                               {content.pricing.detailedInfo.paymentInfo.bank}
                             </p>
                             <p className="text-gray-700">
-                              {content.pricing.detailedInfo.paymentInfo.bankValue}
+                              {
+                                content.pricing.detailedInfo.paymentInfo
+                                  .bankValue
+                              }
                             </p>
                           </div>
                           <div className="space-y-2">
                             <p className="font-semibold">
-                              {content.pricing.detailedInfo.paymentInfo.accountNumber}
+                              {
+                                content.pricing.detailedInfo.paymentInfo
+                                  .accountNumber
+                              }
                             </p>
                             <div className="flex items-center space-x-2">
                               <p className="text-gray-700">
-                                {content.pricing.detailedInfo.paymentInfo.accountNumberValue}
+                                {
+                                  content.pricing.detailedInfo.paymentInfo
+                                    .accountNumberValue
+                                }
                               </p>
                               <button
                                 onClick={() =>
                                   copyToClipboard(
-                                    content.pricing.detailedInfo.paymentInfo.accountNumberValue
+                                    content.pricing.detailedInfo.paymentInfo
+                                      .accountNumberValue
                                   )
                                 }
                                 className="p-1 rounded-md hover:bg-green-100 transition-colors"
-                                aria-label={content.pricing.detailedInfo.paymentInfo.copyButton}
+                                aria-label={
+                                  content.pricing.detailedInfo.paymentInfo
+                                    .copyButton
+                                }
                               >
                                 {copied ? (
                                   <Check className="w-4 h-4 text-green-600" />
@@ -654,9 +708,14 @@ export function LandingPageComponent() {
                         <h4 className="font-bold mb-2">
                           {content.pricing.detailedInfo.notes.title}
                         </h4>
-                        <p>{content.pricing.detailedInfo.notes.paymentMethod}</p>
                         <p>
-                          {content.pricing.detailedInfo.notes.confirmationInstruction}{' '}
+                          {content.pricing.detailedInfo.notes.paymentMethod}
+                        </p>
+                        <p>
+                          {
+                            content.pricing.detailedInfo.notes
+                              .confirmationInstruction
+                          }{" "}
                           <a
                             href="https://lin.ee/9bs6DF0"
                             target="_blank"
@@ -664,15 +723,19 @@ export function LandingPageComponent() {
                             className="text-green-600 hover:underline"
                           >
                             Line
-                          </a>{' '}
+                          </a>{" "}
                           {content.pricing.detailedInfo.notes.provideInfo}
                         </p>
                         <ul className="list-disc list-inside ml-4">
-                          {content.pricing.detailedInfo.notes.requiredInfo.map((info, index) => (
-                            <li key={index}>{info}</li>
-                          ))}
+                          {content.pricing.detailedInfo.notes.requiredInfo.map(
+                            (info, index) => (
+                              <li key={index}>{info}</li>
+                            )
+                          )}
                         </ul>
-                        <p className="mt-2">{content.pricing.detailedInfo.notes.confirmation}</p>
+                        <p className="mt-2">
+                          {content.pricing.detailedInfo.notes.confirmation}
+                        </p>
                       </div>
                     </div>
                   </DialogContent>
@@ -704,12 +767,19 @@ export function LandingPageComponent() {
           </section>
         </AnimatedSection>
         <AnimatedSection>
-          <section id="contact" className="py-20 bg-[#064423] text-white scroll-mt-20">
+          <section
+            id="contact"
+            className="py-20 bg-[#064423] text-white scroll-mt-20"
+          >
             <div className="container mx-auto px-4">
-              <h2 className="text-4xl font-bold mb-12 text-center">{content.contact.title}</h2>
+              <h2 className="text-4xl font-bold mb-12 text-center">
+                {content.contact.title}
+              </h2>
               <div className="grid md:grid-cols-2 gap-12">
                 <div>
-                  <h3 className="text-2xl font-bold mb-4">{content.contact.subtitle}</h3>
+                  <h3 className="text-2xl font-bold mb-4">
+                    {content.contact.subtitle}
+                  </h3>
                   <div className="space-y-4">
                     <div className="flex items-center space-x-4">
                       <MapPin size={24} />
@@ -725,7 +795,11 @@ export function LandingPageComponent() {
                     </div>
                   </div>
                   <div className="mt-6 flex space-x-4">
-                    <a href="https://lin.ee/9bs6DF0" target="_blank" rel="noopener noreferrer">
+                    <a
+                      href="https://lin.ee/9bs6DF0"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="28"

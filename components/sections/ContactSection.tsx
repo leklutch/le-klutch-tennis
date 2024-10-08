@@ -1,16 +1,19 @@
-import React from "react";
-import { MapPin, Phone, Clock, Instagram, Facebook } from "lucide-react";
+import React from 'react';
+import { MapPin, Phone, Clock, Instagram, Facebook } from 'lucide-react';
 
-const ContactSection = ({ content }) => {
+type ContactSectionContent = {
+  title: string;
+  subtitle: string;
+  address: string;
+  phone: string;
+  hours: string;
+};
+
+const ContactSection = ({ content }: { content: ContactSectionContent }) => {
   return (
-    <section
-      id="contact"
-      className="py-20 bg-[#064423] text-white scroll-mt-20"
-    >
+    <section id="contact" className="py-20 bg-[#064423] text-white scroll-mt-20">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold mb-12 text-center">
-          {content.title}
-        </h2>
+        <h2 className="text-4xl font-bold mb-12 text-center">{content.title}</h2>
         <div className="grid md:grid-cols-2 gap-12">
           <div>
             <h3 className="text-2xl font-bold mb-4">{content.subtitle}</h3>

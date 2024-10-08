@@ -137,7 +137,7 @@ export function LandingPageComponent({ initialNewsData }: { initialNewsData: New
     localStorage.setItem('language', value);
   };
 
-  const [content, setContent] = useState<ContentType>(zhTW as ContentType);
+  const [content, setContent] = useState(zhTW);
   const loadLanguageContent = useCallback((lang: string) => {
     try {
       if (!SUPPORTED_LANGUAGES.includes(lang)) {
@@ -272,7 +272,7 @@ export function LandingPageComponent({ initialNewsData }: { initialNewsData: New
         </AnimatedSection>
 
         <AnimatedSection>
-          <FAQSection content={content.faq as object} />
+          <FAQSection content={content.faq} />
         </AnimatedSection>
 
         <AnimatedSection>

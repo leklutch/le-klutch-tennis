@@ -128,7 +128,7 @@ export function LandingPageComponent({
   const [currentLanguage, setCurrentLanguage] = useState("zh-TW");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const [viewportHeight, setViewportHeight] = useState("100vh");
+  const [viewportHeight, setViewportHeight] = useState("100dvh");
 
   useEffect(() => {
     // 初始化時從 localStorage 或其他地方獲取當前語言

@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSwipeable } from "react-swipeable";
+import { useSwipeable, SwipeEventData } from "react-swipeable";
 import { Loader2 } from "lucide-react";
 
 interface News {
@@ -36,9 +36,10 @@ interface GlobalWindow extends Window {
 const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isSwipingActive, setIsSwipingActive] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 檢查是否為移動設備
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -68,12 +69,6 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if ((window as GlobalWindow).instgrm) {
-  //     (window as GlobalWindow).instgrm?.Embeds.process();
-  //   }
-  // }, [currentIndex]);
-
   // 保留這個 useEffect，它在語言變化時重置當前索引
   useEffect(() => {
     setCurrentIndex(0);
@@ -100,10 +95,36 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
     });
   }, [content.news.length, isMobile]);
 
+  const handleSwiped = useCallback(
+    (eventData: SwipeEventData) => {
+      if (eventData.dir === "Left") {
+        nextNews();
+      } else if (eventData.dir === "Right") {
+        prevNews();
+      }
+      setIsSwipingActive(false);
+    },
+    [nextNews, prevNews]
+  );
+
   const handlers = useSwipeable({
-    onSwipedLeft: nextNews,
-    onSwipedRight: prevNews,
+    onSwipeStart: (eventData) => {
+      if (Math.abs(eventData.deltaY) < Math.abs(eventData.deltaX)) {
+        setIsSwipingActive(true);
+        if (eventData.event instanceof TouchEvent) {
+          eventData.event.preventDefault();
+        }
+      }
+    },
+    onSwiped: handleSwiped,
+    onTouchEndOrOnMouseUp: () => {
+      setIsSwipingActive(false);
+    },
     trackMouse: true,
+    trackTouch: true,
+    delta: 10,
+    preventDefaultTouchmoveEvent: false,
+    swipeDuration: 500,
   });
 
   return (
@@ -134,10 +155,12 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
             </Button>
           )}
           <div
+            ref={containerRef}
             className={`overflow-hidden w-full ${
               isMobile ? "max-w-full" : "max-w-6xl"
-            }`}
-            {...handlers}
+            } relative`}
+            {...(isMobile ? handlers : {})}
+            style={{ touchAction: isSwipingActive ? "none" : "auto" }}
           >
             <div
               className="flex transition-transform duration-300 ease-in-out"
@@ -149,7 +172,7 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
             >
               {content.news.map((news, index) => (
                 <div
-                  key={`${language}-${index}`} // 修改 key 以包含語言
+                  key={`${language}-${index}`}
                   className={`${
                     isMobile ? "w-full" : "w-1/3"
                   } flex-shrink-0 flex-grow-0 ${isMobile ? "px-0" : "px-2"}`}
@@ -166,8 +189,6 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                           ]
                         }
                       </p>
-
-                      {/* check if link is instagram post if not using <a> tag to open in new tab */}
                       {news.link.includes("instagram.com") ? (
                         <div
                           className="relative"
@@ -179,7 +200,6 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                         >
                           <blockquote
                             className="instagram-media absolute inset-0"
-                            data-instgrm-preserve-position
                             data-instgrm-permalink={news.link}
                             data-instgrm-version="14"
                             style={{
@@ -194,6 +214,14 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                               <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
                             </div>
                           </blockquote>
+                          {isMobile && (
+                            <div
+                              className="absolute inset-0 z-10"
+                              style={{
+                                pointerEvents: "auto",
+                              }}
+                            />
+                          )}
                         </div>
                       ) : (
                         <a

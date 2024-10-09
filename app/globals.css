@@ -76,3 +76,19 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.vh-fix {
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
+}

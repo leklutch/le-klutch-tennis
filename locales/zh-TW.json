@@ -16,34 +16,7 @@
   },
   "news": {
     "title": "最新消息",
-    "viewMore": "查看更多",
-    "news": [
-      {
-        "title": "夏季特別課程開始報名",
-        "description": "我們的夏季特別課程現已開放報名，適合各年齡層的網球愛好者。",
-        "link": "https://www.instagram.com/reel/DA2a49wxSG3"
-      },
-      {
-        "title": "新教練加入團隊",
-        "description": "我們很高興地宣布，前職業選手王小明教練已加入我們的教練團隊。",
-        "link": "https://www.instagram.com/reel/DA0fFz8xtdq"
-      },
-      {
-        "title": "場地維護通知",
-        "description": "為了提供更好的打球體驗，我們將於本月進行場地維護工作。",
-        "link": "https://www.instagram.com/reel/DAAFRtGTs0p"
-      },
-      {
-        "title": "週末特別活動",
-        "description": "本週末我們將舉辦一場友誼賽，歡迎所有會員參加。",
-        "link": "https://www.instagram.com/reel/DAAFRtGTs0p"
-      },
-      {
-        "title": "五月優惠活動",
-        "description": "五月份報名課程可享受9折優惠，機會難得，請把握機會！",
-        "link": "https://www.instagram.com/reel/DA0fFz8xtdq"
-      }
-    ]
+    "viewMore": "查看更多"
   },
   "about": {
     "title": "LE KLUTCH - 可奇室內網球俱樂部",

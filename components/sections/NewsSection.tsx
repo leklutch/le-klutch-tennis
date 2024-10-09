@@ -225,11 +225,13 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                       </p>
                       {news.link.includes("instagram.com") ? (
                         <div
-                          className="relative border border-gray-200 rounded-lg overflow-hidden shadow-sm"
+                          className="relative border border-gray-200 rounded-lg overflow-hidden shadow-sm mx-auto"
                           style={{
-                            minWidth: "326px",
+                            width: "100%",
                             maxWidth: "540px",
-                            height: "570px",
+                            height: news.link.includes("/reel/")
+                              ? "700px"
+                              : "700px", // Increase height for reels
                           }}
                         >
                           <div className="absolute top-0 left-0 right-0 bg-white z-10 border-b border-gray-300">
@@ -264,22 +266,27 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                               </div>
                             </div>
                           </div>
-                          <blockquote
-                            className="instagram-media absolute inset-0 pt-14"
-                            data-instgrm-permalink={news.link}
-                            data-instgrm-version="14"
-                            style={{
-                              background: "#FFF",
-                              border: "0",
-                              width: "100%",
-                              height: "calc(100% - 56px)",
-                              overflow: "hidden",
-                            }}
-                          >
-                            <div className="h-full flex items-center justify-center">
-                              <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
-                            </div>
-                          </blockquote>
+                          <div className="absolute inset-0 pt-14 flex items-center justify-center overflow-hidden">
+                            <blockquote
+                              className="instagram-media"
+                              data-instgrm-captioned
+                              data-instgrm-permalink={news.link}
+                              data-instgrm-version="14"
+                              style={{
+                                background: "#FFF",
+                                border: "0",
+                                width: "100%",
+                                height: "calc(100% + 100px)",
+                                marginTop: "-100px",
+                                maxWidth: "540px",
+                                minWidth: "326px",
+                              }}
+                            >
+                              <div className="h-full w-full flex items-center justify-center">
+                                <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+                              </div>
+                            </blockquote>
+                          </div>
                         </div>
                       ) : (
                         <a

@@ -1,18 +1,18 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useSwipeable } from 'react-swipeable';
-import { Loader2 } from 'lucide-react';
+import React, { useEffect, useState, useCallback } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useSwipeable } from "react-swipeable";
+import { Loader2 } from "lucide-react";
 
 interface News {
   title: {
-    'zh-TW': string;
-    'en-US': string;
+    "zh-TW": string;
+    "en-US": string;
   };
   description: {
-    'zh-TW': string;
-    'en-US': string;
+    "zh-TW": string;
+    "en-US": string;
   };
   link: string;
 }
@@ -44,15 +44,15 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
 
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
     // Load Instagram embed script
-    const script = document.createElement('script');
-    script.src = '//www.instagram.com/embed.js';
+    const script = document.createElement("script");
+    script.src = "//www.instagram.com/embed.js";
     script.async = true;
     document.body.appendChild(script);
 
@@ -82,7 +82,9 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
   // 使用 useCallback 來記憶這些函數，避免不必要的重新渲染
   const nextNews = useCallback(() => {
     setCurrentIndex((prevIndex) =>
-      prevIndex + (isMobile ? 1 : 3) >= content.news.length ? 0 : prevIndex + (isMobile ? 1 : 3)
+      prevIndex + (isMobile ? 1 : 3) >= content.news.length
+        ? 0
+        : prevIndex + (isMobile ? 1 : 3)
     );
   }, [content.news.length, isMobile]);
 
@@ -108,6 +110,23 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
     <section id="news" className="py-16 bg-green-10">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-8">{content.title}</h2>
+        <div className="flex justify-center mt-4 pb-4">
+          {Array.from({
+            length: Math.ceil(content.news.length / (isMobile ? 1 : 3)),
+          }).map((_, index) => (
+            <button
+              key={index}
+              className={`h-2 w-2 rounded-full mx-1 ${
+                index ===
+                (currentIndex / (isMobile ? 1 : 3)) %
+                  Math.ceil(content.news.length / (isMobile ? 1 : 3))
+                  ? "bg-green-600"
+                  : "bg-gray-300"
+              }`}
+              onClick={() => setCurrentIndex(index * (isMobile ? 1 : 3))}
+            />
+          ))}
+        </div>
         <div className="flex items-center justify-center">
           {!isMobile && (
             <Button onClick={prevNews} variant="ghost" className="mr-4 z-10">
@@ -115,19 +134,25 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
             </Button>
           )}
           <div
-            className={`overflow-hidden w-full ${isMobile ? 'max-w-full' : 'max-w-6xl'}`}
+            className={`overflow-hidden w-full ${
+              isMobile ? "max-w-full" : "max-w-6xl"
+            }`}
             {...handlers}
           >
             <div
               className="flex transition-transform duration-300 ease-in-out"
-              style={{ transform: `translateX(-${(currentIndex * 100) / (isMobile ? 1 : 3)}%)` }}
+              style={{
+                transform: `translateX(-${
+                  (currentIndex * 100) / (isMobile ? 1 : 3)
+                }%)`,
+              }}
             >
               {content.news.map((news, index) => (
                 <div
                   key={`${language}-${index}`} // 修改 key 以包含語言
-                  className={`${isMobile ? 'w-full' : 'w-1/3'} flex-shrink-0 flex-grow-0 ${
-                    isMobile ? 'px-0' : 'px-2'
-                  }`}
+                  className={`${
+                    isMobile ? "w-full" : "w-1/3"
+                  } flex-shrink-0 flex-grow-0 ${isMobile ? "px-0" : "px-2"}`}
                 >
                   <Card className="h-full">
                     <CardContent className="p-6">
@@ -135,14 +160,22 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                         {news.title[language as keyof typeof news.title]}
                       </h3>
                       <p className="text-gray-700 mb-4 whitespace-pre-line">
-                        {news.description[language as keyof typeof news.description]}
+                        {
+                          news.description[
+                            language as keyof typeof news.description
+                          ]
+                        }
                       </p>
 
                       {/* check if link is instagram post if not using <a> tag to open in new tab */}
-                      {news.link.includes('instagram.com') ? (
+                      {news.link.includes("instagram.com") ? (
                         <div
                           className="relative"
-                          style={{ minWidth: '326px', maxWidth: '540px', height: '570px' }}
+                          style={{
+                            minWidth: "326px",
+                            maxWidth: "540px",
+                            height: "570px",
+                          }}
                         >
                           <blockquote
                             className="instagram-media absolute inset-0"
@@ -150,35 +183,24 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                             data-instgrm-permalink={news.link}
                             data-instgrm-version="14"
                             style={{
-                              background: '#FFF',
-                              border: '0',
-                              width: '100%',
-                              height: '100%',
-                              overflow: 'hidden',
+                              background: "#FFF",
+                              border: "0",
+                              width: "100%",
+                              height: "100%",
+                              overflow: "hidden",
                             }}
                           >
                             <div className="h-full flex items-center justify-center">
                               <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
                             </div>
-                            <div style={{ padding: '8px' }}>
-                              <a
-                                href={news.link}
-                                style={{
-                                  background: '#FFFFFF',
-                                  lineHeight: '0',
-                                  padding: '0 0',
-                                  textAlign: 'center',
-                                  textDecoration: 'none',
-                                  width: '100%',
-                                }}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              ></a>
-                            </div>
                           </blockquote>
                         </div>
                       ) : (
-                        <a href={news.link} target="_blank" rel="noopener noreferrer">
+                        <a
+                          href={news.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           <ChevronRight className="h-6 w-6" />
                         </a>
                       )}
@@ -192,23 +214,6 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
             <Button onClick={nextNews} variant="ghost" className="ml-4 z-10">
               <ChevronRight className="h-6 w-6" />
             </Button>
-          )}
-        </div>
-        <div className="flex justify-center mt-4">
-          {Array.from({ length: Math.ceil(content.news.length / (isMobile ? 1 : 3)) }).map(
-            (_, index) => (
-              <button
-                key={index}
-                className={`h-2 w-2 rounded-full mx-1 ${
-                  index ===
-                  (currentIndex / (isMobile ? 1 : 3)) %
-                    Math.ceil(content.news.length / (isMobile ? 1 : 3))
-                    ? 'bg-green-600'
-                    : 'bg-gray-300'
-                }`}
-                onClick={() => setCurrentIndex(index * (isMobile ? 1 : 3))}
-              />
-            )
           )}
         </div>
       </div>

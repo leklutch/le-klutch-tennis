@@ -3,7 +3,7 @@
     "title": "Le Klutch",
     "nav": {
       "news": "最新消息",
-      "about": "可奇室內網球",
+      "about": "可奇網球",
       "facilities": "設施",
       "pricing": "價格",
       "contact": "聯絡我們"
@@ -118,7 +118,12 @@
       "groupLessons": {
         "title": "團課方案價目表",
         "description": "團課時段及課程點數請參閱單月課表",
-        "tableHeaders": ["點數套餐", "套票價格 & 有效期限", "點數", "每點平均價"],
+        "tableHeaders": [
+          "點數套餐",
+          "套票價格 & 有效期限",
+          "點數",
+          "每點平均價"
+        ],
         "packages": [
           {
             "name": "一點 SINGLE",

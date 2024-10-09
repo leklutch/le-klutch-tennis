@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSwipeable, SwipeEventData } from "react-swipeable";
 import { Loader2 } from "lucide-react";
 
 interface News {
@@ -54,8 +53,8 @@ function useCombinedRefs<T>(...refs: React.Ref<T>[]) {
 const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [isSwipingActive, setIsSwipingActive] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -113,61 +112,76 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
     });
   }, [content.news.length, isMobile]);
 
-  const handleSwiped = useCallback(
-    (eventData: SwipeEventData) => {
-      if (eventData.dir === "Left") {
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+
+    if (Math.abs(diff) > 50) {
+      // Minimum swipe distance
+      if (diff > 0) {
         nextNews();
-      } else if (eventData.dir === "Right") {
+      } else {
         prevNews();
       }
-      setIsSwipingActive(false);
-    },
-    [nextNews, prevNews]
-  );
+    }
 
-  const handlers = useSwipeable({
-    onSwipeStart: (eventData) => {
-      if (Math.abs(eventData.deltaY) < Math.abs(eventData.deltaX)) {
-        setIsSwipingActive(true);
-        if (eventData.event instanceof TouchEvent) {
-          eventData.event.preventDefault();
-        }
-      }
-    },
-    onSwiped: handleSwiped,
-    onTouchEndOrOnMouseUp: () => {
-      setIsSwipingActive(false);
-    },
-    trackMouse: true,
-    trackTouch: true,
-    delta: 10,
-    // Removed preventDefaultTouchmoveEvent to fix linter error
-    swipeDuration: 500,
-  });
-
-  const combinedRef = useCombinedRefs(containerRef, handlers.ref);
+    touchStartX.current = null;
+  };
 
   return (
-    <section id="news" className="py-16 bg-green-10">
+    <section
+      id="news"
+      className="py-16 bg-gradient-to-b from-green-50 to-white"
+    >
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">{content.title}</h2>
-        <div className="flex justify-center mt-4 pb-4">
-          {Array.from({
-            length: Math.ceil(content.news.length / (isMobile ? 1 : 3)),
-          }).map((_, index) => (
-            <button
-              key={index}
-              className={`h-2 w-2 rounded-full mx-1 ${
-                index ===
-                (currentIndex / (isMobile ? 1 : 3)) %
-                  Math.ceil(content.news.length / (isMobile ? 1 : 3))
-                  ? "bg-green-600"
-                  : "bg-gray-300"
-              }`}
-              onClick={() => setCurrentIndex(index * (isMobile ? 1 : 3))}
-            />
-          ))}
+        <h2 className="text-3xl font-bold text-center mb-12 text-green-800">
+          {content.title}
+        </h2>
+
+        <div className="relative mb-4">
+          <div className="flex justify-center">
+            {Array.from({
+              length: Math.ceil(content.news.length / (isMobile ? 1 : 3)),
+            }).map((_, index) => (
+              <button
+                key={index}
+                className={`h-2 w-2 rounded-full mx-1 ${
+                  index ===
+                  (currentIndex / (isMobile ? 1 : 3)) %
+                    Math.ceil(content.news.length / (isMobile ? 1 : 3))
+                    ? "bg-green-600"
+                    : "bg-gray-300"
+                }`}
+                onClick={() => setCurrentIndex(index * (isMobile ? 1 : 3))}
+              />
+            ))}
+          </div>
+          {isMobile && (
+            <>
+              <Button
+                onClick={prevNews}
+                variant="ghost"
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </Button>
+              <Button
+                onClick={nextNews}
+                variant="ghost"
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </Button>
+            </>
+          )}
         </div>
+
         <div className="flex items-center justify-center">
           {!isMobile && (
             <Button onClick={prevNews} variant="ghost" className="mr-4 z-10">
@@ -175,12 +189,12 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
             </Button>
           )}
           <div
-            ref={combinedRef}
+            ref={containerRef}
             className={`overflow-hidden w-full ${
               isMobile ? "max-w-full" : "max-w-6xl"
             } relative`}
-            {...(isMobile ? handlers : {})}
-            style={{ touchAction: isSwipingActive ? "none" : "auto" }}
+            onTouchStart={isMobile ? handleTouchStart : undefined}
+            onTouchEnd={isMobile ? handleTouchEnd : undefined}
           >
             <div
               className="flex transition-transform duration-300 ease-in-out"
@@ -195,14 +209,14 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                   key={`${language}-${index}`}
                   className={`${
                     isMobile ? "w-full" : "w-1/3"
-                  } flex-shrink-0 flex-grow-0 ${isMobile ? "px-0" : "px-2"}`}
+                  } flex-shrink-0 flex-grow-0 ${isMobile ? "px-0" : "px-3"}`}
                 >
-                  <Card className="h-full">
+                  <Card className="h-full transition-all duration-300 ease-in-out transform hover:shadow-lg hover:-translate-y-1 bg-white rounded-xl overflow-hidden">
                     <CardContent className="p-6">
-                      <h3 className="text-xl font-semibold mb-2 whitespace-pre-line">
+                      <h3 className="text-xl font-semibold mb-3 text-green-700 whitespace-pre-line">
                         {news.title[language as keyof typeof news.title]}
                       </h3>
-                      <p className="text-gray-700 mb-4 whitespace-pre-line">
+                      <p className="text-gray-600 mb-4 whitespace-pre-line">
                         {
                           news.description[
                             language as keyof typeof news.description
@@ -211,7 +225,7 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                       </p>
                       {news.link.includes("instagram.com") ? (
                         <div
-                          className="relative border border-gray-300 rounded-lg overflow-hidden shadow-sm"
+                          className="relative border border-gray-200 rounded-lg overflow-hidden shadow-sm"
                           style={{
                             minWidth: "326px",
                             maxWidth: "540px",
@@ -220,17 +234,23 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                         >
                           <div className="absolute top-0 left-0 right-0 bg-white z-10 border-b border-gray-300">
                             <div className="flex items-center p-3">
-                              <img
-                                src="https://i.pinimg.com/474x/1e/d6/e0/1ed6e0a9e69176a5fdb7e090a1046b86.jpg"
-                                alt="Instagram"
-                                className="w-8 h-8 mr-2"
-                              />
+                              <div className="relative w-8 h-8 mr-2">
+                                <div className="absolute inset-0 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 rounded-full"></div>
+                                <div className="absolute inset-0.5 bg-white rounded-full"></div>
+                                <img
+                                  src="/images/le-klutch-logo.png"
+                                  alt="Instagram"
+                                  className="absolute inset-0.5 w-7 h-7 rounded-full object-cover object-center"
+                                />
+                              </div>
                               <div className="flex flex-col">
-                                <span className="font-semibold text-sm">
-                                  Instagram
-                                </span>
-                                <span className="text-xs text-gray-500">
-                                  查看此貼文
+                                <span
+                                  className="font-semibold text-sm cursor-pointer"
+                                  onClick={() =>
+                                    window.open(news.link, "_blank")
+                                  }
+                                >
+                                  @leklutchtennisclub
                                 </span>
                               </div>
                               <div className="ml-auto">
@@ -260,23 +280,15 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                               <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
                             </div>
                           </blockquote>
-                          {isMobile && (
-                            <div
-                              className="absolute inset-0 z-20"
-                              style={{
-                                pointerEvents: "auto",
-                              }}
-                            />
-                          )}
                         </div>
                       ) : (
                         <a
                           href={news.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center text-blue-600 hover:underline"
+                          className="inline-flex items-center text-green-600 hover:text-green-700 transition-colors duration-200"
                         >
-                          閱讀更多 <ChevronRight className="h-4 w-4 ml-1" />
+                          More <ChevronRight className="h-4 w-4 ml-1" />
                         </a>
                       )}
                     </CardContent>

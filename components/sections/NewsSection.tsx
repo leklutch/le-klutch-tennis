@@ -33,6 +33,24 @@ interface GlobalWindow extends Window {
   };
 }
 
+// Add this utility function above your component
+function useCombinedRefs<T>(...refs: React.Ref<T>[]) {
+  const targetRef = useRef<T>(null);
+
+  useEffect(() => {
+    refs.forEach((ref) => {
+      if (!ref) return;
+      if (typeof ref === "function") {
+        ref(targetRef.current);
+      } else {
+        (ref as React.MutableRefObject<T | null>).current = targetRef.current;
+      }
+    });
+  }, [refs]);
+
+  return targetRef;
+}
+
 const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -123,9 +141,11 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
     trackMouse: true,
     trackTouch: true,
     delta: 10,
-    preventDefaultTouchmoveEvent: false,
+    // Removed preventDefaultTouchmoveEvent to fix linter error
     swipeDuration: 500,
   });
+
+  const combinedRef = useCombinedRefs(containerRef, handlers.ref);
 
   return (
     <section id="news" className="py-16 bg-green-10">
@@ -155,7 +175,7 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
             </Button>
           )}
           <div
-            ref={containerRef}
+            ref={combinedRef}
             className={`overflow-hidden w-full ${
               isMobile ? "max-w-full" : "max-w-6xl"
             } relative`}
@@ -191,22 +211,48 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                       </p>
                       {news.link.includes("instagram.com") ? (
                         <div
-                          className="relative"
+                          className="relative border border-gray-300 rounded-lg overflow-hidden shadow-sm"
                           style={{
                             minWidth: "326px",
                             maxWidth: "540px",
                             height: "570px",
                           }}
                         >
+                          <div className="absolute top-0 left-0 right-0 bg-white z-10 border-b border-gray-300">
+                            <div className="flex items-center p-3">
+                              <img
+                                src="https://i.pinimg.com/474x/1e/d6/e0/1ed6e0a9e69176a5fdb7e090a1046b86.jpg"
+                                alt="Instagram"
+                                className="w-8 h-8 mr-2"
+                              />
+                              <div className="flex flex-col">
+                                <span className="font-semibold text-sm">
+                                  Instagram
+                                </span>
+                                <span className="text-xs text-gray-500">
+                                  查看此貼文
+                                </span>
+                              </div>
+                              <div className="ml-auto">
+                                <svg
+                                  className="w-5 h-5 text-blue-500"
+                                  fill="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm5.5 6.5h-3.5v-3h-4v3h-3.5l5.5 5.5 5.5-5.5z" />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
                           <blockquote
-                            className="instagram-media absolute inset-0"
+                            className="instagram-media absolute inset-0 pt-14"
                             data-instgrm-permalink={news.link}
                             data-instgrm-version="14"
                             style={{
                               background: "#FFF",
                               border: "0",
                               width: "100%",
-                              height: "100%",
+                              height: "calc(100% - 56px)",
                               overflow: "hidden",
                             }}
                           >
@@ -216,7 +262,7 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                           </blockquote>
                           {isMobile && (
                             <div
-                              className="absolute inset-0 z-10"
+                              className="absolute inset-0 z-20"
                               style={{
                                 pointerEvents: "auto",
                               }}
@@ -228,8 +274,9 @@ const NewsSection: React.FC<NewsSectionProps> = ({ content, language }) => {
                           href={news.link}
                           target="_blank"
                           rel="noopener noreferrer"
+                          className="inline-flex items-center text-blue-600 hover:underline"
                         >
-                          <ChevronRight className="h-6 w-6" />
+                          閱讀更多 <ChevronRight className="h-4 w-4 ml-1" />
                         </a>
                       )}
                     </CardContent>
